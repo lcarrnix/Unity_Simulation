@@ -7,7 +7,7 @@ using UnityEngine.SceneManagement;
 
 public class LoginButton : MonoBehaviour {
 	public Button loginBtn; 
-	public Button showPassword;
+	//public Button showPassword;
 
 	public Toggle passwordToggle;
 
@@ -17,12 +17,11 @@ public class LoginButton : MonoBehaviour {
 	void Start()
 	{
 		loginBtn = loginBtn.GetComponent<Button> ();
-		showPassword = showPassword.GetComponent<Button> ();
+		//showPassword = showPassword.GetComponent<Button> ();
 		username = username.GetComponent<InputField> ();
 		password = password.GetComponent<InputField> ();
 
 		loginBtn.enabled = false; //can't log in until both fields are filled
-		showPassword.enabled = false; //will be enabled once password field is used
 		password.enabled = true;
 		username.enabled = true;
 
@@ -31,7 +30,7 @@ public class LoginButton : MonoBehaviour {
 		EnterUsername ();
 	}
 
-	public void StartSim() //when user clicks login
+	public void StartSim() //when user clicks login- jumps to main scene
 	{
 		SceneManager.LoadScene ("MiniGame");
 	}
@@ -40,13 +39,13 @@ public class LoginButton : MonoBehaviour {
 	{
 		if(username.isFocused && (Input.GetKey(KeyCode.Tab) || Input.GetKey(KeyCode.Return)))
 		{
-			//jump to password field
+			//jump to password field- shortcut 
 			EnterPassword();
 		}
 
 		if (password.isFocused && username.text != "" && password.text != "" && Input.GetKey (KeyCode.Return)) 
 		{
-			PressEnter ();
+			PressEnter (); //not working- should be able to press enter if both fields are filled in to start simulation
 		}
 
 	}
@@ -55,39 +54,33 @@ public class LoginButton : MonoBehaviour {
 	{
 		username.ActivateInputField (); //can click and type in this field, curser is flashing in field
 		username.enabled = true;
-		//password.ActivateInputField ();
 	
 		if(username.text != "") 
 		{
-			//password.ActivateInputField ();
 			if (Input.GetKey (KeyCode.Tab) || Input.GetKey (KeyCode.Return)) 
 			{
-				Debug.Log ("pressed");
 				username.enabled = false;
-				EnterPassword ();
+				EnterPassword (); //jumps to password input field
 			}
 		}
 
 		if ((username.text != "") && (password.text != "")) 
 		{
-			PressLogin ();
+			PressLogin (); //if both fields are filled in, login button can be pressed
 		}
+		//***should have else statement to remind user to enter both username and password
 	}
 
 	public void EnterPassword()
 	{
-		Debug.Log ("HELLO");
-		//username.enabled = false;
 		password.enabled = true;
-		username.DeactivateInputField ();
-		showPassword.enabled = true;
+		username.DeactivateInputField (); //keeps cursor in the password field
 
 		password.ActivateInputField ();
 		if (password.text != "")
 		{
-			Debug.Log ("in here");
 			loginBtn.IsActive ();
-			showPassword.enabled = true;
+			//showPassword.enabled = true;
 		}
 
 		if ((username.text != "" && password.text != "") && Input.GetKey (KeyCode.Return)) 
@@ -96,10 +89,10 @@ public class LoginButton : MonoBehaviour {
 			PressEnter();
 		}
 
-		PressLogin ();
+		PressLogin (); //will check if both fields are filled in
 	}
 
-	public void togglePassword()
+	public void togglePassword() //overview method for showPassword toggle
 	{
 		if (passwordToggle.isOn) 
 		{
@@ -109,44 +102,27 @@ public class LoginButton : MonoBehaviour {
 		{
 			HidePassword ();
 		}
-
-	}
-
-	public void ShowPasswordBtn()
-	{
-		if (password.contentType == InputField.ContentType.Password) 
-		{
-			ShowPassword ();
-		} 
-		else if (password.contentType == InputField.ContentType.Standard) 
-		{
-			HidePassword ();
-		}
 	}
 
 	public void ShowPassword()
 	{
-		Debug.Log ("showing password");
+		this.password.contentType = InputField.ContentType.Standard; //shows characters
 
-		password.contentType = InputField.ContentType.Standard;
-
-
-		password.ForceLabelUpdate ();
+		password.ForceLabelUpdate (); //from unity forums- makes this change shown at next frame
 	}
 
 	public void HidePassword()
 	{
-		Debug.Log ("hiding password");
-		this.password.contentType = InputField.ContentType.Password;
+		this.password.contentType = InputField.ContentType.Password; //shows asterisks 
 
-		password.ForceLabelUpdate ();
+		password.ForceLabelUpdate (); //from unity forums- makes this change shown at next frame
 	}
 
 	public void PressEnter()
 	{
 		if (password.isFocused && username.text != "" && password.text != "" && Input.GetKey (KeyCode.Return)) 
 		{
-			StartSim ();
+			StartSim (); //if both fields are filled in and user presses enter
 		}
 	}
 	public void PressLogin()
