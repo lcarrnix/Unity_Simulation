@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class ControlMethods : MonoBehaviour {
 	//this class describes the movement behaviors of user's driving abilities for the robot
+	//sets up ways in which the user can move/control the system
 
 	public GameObject Player;
 
