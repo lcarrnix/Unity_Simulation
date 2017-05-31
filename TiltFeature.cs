@@ -1,12 +1,18 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class TiltFeature : MonoBehaviour {
-	//attached to the main camera, this script describes the tilting aspect- up, down, left, right controled by the keys WASD 
-	//might implement restrictions on whether system needs to be in a "Parked" mode to have a rigid body in order to use tilt feature
-	//tilting is separate from rotation both cameras and robot. 
-	//restricting degree of tilting 
+	//attached to the main camera, this script describes the tilting aspect- up, down, left, right 
+	//controlled by the keys WASD 
+	//might implement restrictions on whether system needs to be in a "Parked" mode to have a rigid body 
+	//in order to use tilt feature
+	//tilting is separate from rotating both cameras and robot. 
+	//need to restrict degree of tilting 
+	
+	//*** not currently implemented into the simulation, tilt feature is located in ControlMethods.cs 
+		//should be in this class eventually, had trouble implementing it away from ControlMethods.
+	
 	public GameObject Player;
 	public Camera mainCamera;
 	private Vector3 offset;
@@ -23,6 +29,7 @@ public class TiltFeature : MonoBehaviour {
 	private float moveHorizontal; 
 	private float moveVertical;
 	public Vector3 movement;
+	
 	// Use this for initialization
 	void Start () 
 	{
@@ -30,9 +37,7 @@ public class TiltFeature : MonoBehaviour {
 		ControlMethInstance = GetComponent<ControlMethods> ();
 		CameraControlInstance = GetComponent<CameraController> (); 
 
-		//Player = PlayerControlInstance.Player;
 		offset = transform.position - Player.transform.position; //setting offset as distance between camera and ball
-		//rb = PlayerControlInstance.rb;
 
 		mainCamera.enabled = true;
 	}
@@ -48,7 +53,6 @@ public class TiltFeature : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		//Debug.Log ("in tilt feature update method");
 		//TILT FEATURE FOR MAIN CAMERA VIEW
 
 		//THESE DON'T WORK IN HERE
