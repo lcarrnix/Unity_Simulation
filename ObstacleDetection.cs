@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ObstacleDetection : MonoBehaviour {
+	//detects and avoids obstacles from player's point of view
 
 	public GameObject Player;
 	PlayerController PlayerControlInstance; //instance of PlayerController class
