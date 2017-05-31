@@ -5,7 +5,10 @@ using UnityEngine;
 using UnityEngine.UI;
 
 public class PasswordToggle : MonoBehaviour {
-
+	//not currently implemented into simulation
+	//may be helpful in future during interface development
+	//would be used for password showing in a toggle
+	
 	public UnityEngine.UI.InputField password = null;
 
 	//pretty sure this script does nothing
