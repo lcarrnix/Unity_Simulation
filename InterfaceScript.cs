@@ -4,9 +4,9 @@ using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
-//the script for all of the interface/display elements in the main scene (actual simulation environment)
 public class InterfaceScript : MonoBehaviour {
-	
+	//the script for all of the interface/display elements in the main scene (actual simulation environment)
+
 	//canvases/menus
 	public Canvas mainInterface;
 	public Canvas quitMenu; 
