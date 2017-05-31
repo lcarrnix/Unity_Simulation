@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -6,6 +6,9 @@ using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
 public class LoginButton : MonoBehaviour {
+	//script for login scene of application
+	//constructs usability of the username and password input fields, show password toggle, and login button
+	
 	public Button loginBtn; 
 	//public Button showPassword;
 
@@ -45,7 +48,8 @@ public class LoginButton : MonoBehaviour {
 
 		if (password.isFocused && username.text != "" && password.text != "" && Input.GetKey (KeyCode.Return)) 
 		{
-			PressEnter (); //not working- should be able to press enter if both fields are filled in to start simulation
+			PressEnter (); //not working- currently have to press enter twice to jump to mainScene
+				//should just be once
 		}
 
 	}
