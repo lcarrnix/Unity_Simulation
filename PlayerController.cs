@@ -12,7 +12,6 @@ public class PlayerController : MonoBehaviour {
 
 	void Start()
 	{
-		Debug.Log ("hello");
 		rb = GetComponent<Rigidbody> ();
 	}
 }
