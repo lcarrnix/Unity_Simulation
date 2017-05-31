@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MapCameraController : MonoBehaviour {
+	//links to player and creates an offset between them to maintain during movement, points down at entire environment
+	//for a bird's eye/map view, will be toggled on/off by user
 
 	public GameObject Player; //setting object as player
 	private Vector3 offset; //maintains distance between camera and player
