@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class ObstacleDetection : MonoBehaviour {
-	//detects and avoids obstacles from player's point of view
 
 	public GameObject Player;
 	PlayerController PlayerControlInstance; //instance of PlayerController class
@@ -14,8 +13,8 @@ public class ObstacleDetection : MonoBehaviour {
 	public GameObject[] deskObstacles; //for clearing obstacle warnings- desks
 	public GameObject[] wallObstacles; //for clearing obstacle warnings- walls
 	private RaycastHit hit;
-	public float detectionDistance; //for obstacle detection
 	private float speed;
+	public float detectionDistance; //for obstacle detection
 	private float decreasedSpeed; //for obstacle avoidance
 
 	//direction vectors
@@ -37,6 +36,7 @@ public class ObstacleDetection : MonoBehaviour {
 
 		rb = PlayerControlInstance.rb;
 
+		//direction vectors from space.world
 		forward = transform.TransformDirection (Vector3.forward);
 		back = transform.TransformDirection (Vector3.back);
 		left = transform.TransformDirection (Vector3.left);
@@ -90,56 +90,56 @@ public class ObstacleDetection : MonoBehaviour {
 			//checking which direction obstacle is in relative to player
 			if (Physics.Raycast (transform.position, forward, out hit, detectionDistance * 2)) 
 			{
-				//Debug.Log ("Obstacle in front!");
+				Debug.Log ("Obstacle in front!");
 				theHitObject = hit.collider.gameObject; //sets to obstacle at hand
 
 				frontBackObstacleWarning (theHitObject); //changes color to red
 			}
 			if (Physics.Raycast (transform.position, back, out hit, detectionDistance * 2)) 
 			{
-				//Debug.Log ("Obstacle behind!");
+				Debug.Log ("Obstacle behind!");
 				theHitObject = hit.collider.gameObject;
 
 				frontBackObstacleWarning (theHitObject); //changes color to red
 			}
 			if (Physics.Raycast (transform.position, left, out hit, detectionDistance * 1.7f))
 			{
-				//Debug.Log ("Obstacle to the left!");
+				Debug.Log ("Obstacle to the left!");
 				theHitObject = hit.collider.gameObject; 
 
 				leftRightObstacleWarning (theHitObject); //changes color to yellow
 			}
 			if (Physics.Raycast (transform.position, right, out hit, detectionDistance * 1.7f))
 			{
-				//Debug.Log ("Obstacle to the right!");
+				Debug.Log ("Obstacle to the right!");
 				theHitObject = hit.collider.gameObject; 
 
 				leftRightObstacleWarning (theHitObject); //changes color to yellow
 			}
 			if (Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance * 1.5f)) 
 			{
-				//Debug.Log ("Obstacle in front right diagonal!");
+				Debug.Log ("Obstacle in front right diagonal!");
 				theHitObject = hit.collider.gameObject; 
 
 				frontBackObstacleWarning (theHitObject); //changes color to red
 			}
 			if (Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance * 1.5f)) 
 			{
-				//Debug.Log ("Obstacle in back right diagonal!");
+				Debug.Log ("Obstacle in back right diagonal!");
 				theHitObject = hit.collider.gameObject;
 
 				leftRightObstacleWarning (theHitObject); //changes color to yellow
 			}
 			if (Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance * 1.5f)) 
 			{
-				//Debug.Log ("Obstacle in back left diagonal!");
+				Debug.Log ("Obstacle in back left diagonal!");
 				theHitObject = hit.collider.gameObject; 
 
 				leftRightObstacleWarning (theHitObject); //changes color to yellow
 			}
 			if (Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance * 1.5f)) 
 			{
-				//Debug.Log ("Obstacle in front right diagonal!");
+				Debug.Log ("Obstacle in front left diagonal!");
 				theHitObject = hit.collider.gameObject;
 
 				frontBackObstacleWarning (theHitObject); //changes color to red
@@ -208,6 +208,7 @@ public class ObstacleDetection : MonoBehaviour {
 	void checkObstacleWarning(Vector3 direction, GameObject objectWarning)
 	{
 		//check if object is far enough away
+		//FIXME: Duoble check not.
 		if (!Physics.Raycast (transform.position, direction, out hit, detectionDistance * 2)) 
 		{
 			clearObstacleWarning (theHitObject);
@@ -225,16 +226,9 @@ public class ObstacleDetection : MonoBehaviour {
 	//these tags will be changed when the environment is changed to a living room setting
 	void OnCollisionEnter(Collision col)
 	{
-		if(col.gameObject.tag == "desk")
+		if(col.gameObject.tag == "desk" || col.gameObject.tag == "wall")
 		{
-			//Destroy (col.gameObject);
 			rb.AddForce(0,0,0, ForceMode.VelocityChange);
-		}
-
-		if(col.gameObject.tag == "wall")
-		{
-			//rend.material.color = Color.red;
-			rb.AddForce (0,0,0, ForceMode.VelocityChange); 
 		}
 	}
 		

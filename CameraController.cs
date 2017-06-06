@@ -3,8 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour {
-	//links to player and creates an offset between them to maintain during movement, points out into room for 
-	//user's main point of view
 
 	public GameObject Player;
 	private Vector3 offset; 
@@ -22,15 +20,13 @@ public class CameraController : MonoBehaviour {
 
 	void Update()
 	{
-		//do nothing
 
-		//THESE DON'T WORK IN HERE
+		//THESE DON'T WORK IN HERE - for tilt feature
 		//if (Input.GetKey (KeyCode.W)) 
 		//{
 			//camera tilts up towards ceiling
 		//	transform.Rotate (Vector3.left,  turnSpeed * Time.deltaTime); 
 			//transform.Rotate (Vector3.up, -turnSpeed * Time.deltaTime);
-
 		//}
 
 		//if (Input.GetKey (KeyCode.S)) {
@@ -46,8 +42,7 @@ public class CameraController : MonoBehaviour {
 		//	transform.Rotate (Vector3.up, -turnSpeed * Time.deltaTime);
 		//}
 	}
-
-
+		
 	// runs at end of every frame- guarunteed to run after anything in frame has happened
 	void LateUpdate () {
 		transform.rotation = Player.transform.rotation;

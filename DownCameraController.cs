@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class DownCameraController : MonoBehaviour {
-	//links to player and creates an offset between them to maintain during movement, points down at stand of robot
 
 	public GameObject Player;
 	private Vector3 offset; //distance between camera and player
