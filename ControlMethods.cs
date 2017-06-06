@@ -1,10 +1,9 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ControlMethods : MonoBehaviour {
 	//this class describes the movement behaviors of user's driving abilities for the robot
-	//sets up ways in which the user can move/control the system
 
 	public GameObject Player;
 
@@ -35,16 +34,16 @@ public class ControlMethods : MonoBehaviour {
 	void Start () {
 		PlayerControlInstance = GetComponent<PlayerController> ();
 		rb = PlayerControlInstance.rb;
-		speed = 5.0f;
+		speed = 4.0f; //adjustable
 		decreasedSpeed = 1.0f;
 		mainCamZ = mainCamera.transform.position.z; 
 		mainCamZ = 0.0f;
 	
 		//sets just main camera and centered down camera as on when user starts simulation
-		//should be able to toggle options on/off during play
+		//should be able to toggle options on/off during play- currently not working
 		mainCamera.enabled = true;
-		downCamera.enabled = true;
-		downCamera2.enabled = false; 
+		downCamera.enabled = false;
+		downCamera2.enabled = true; 
 		mapCamera.enabled = true;
 	}
 
@@ -113,7 +112,9 @@ public class ControlMethods : MonoBehaviour {
 			transform.rotation = originalRotation * Quaternion.AngleAxis (0, Vector3.up);
 
 		}
+		//end of things not working
 
+		//way user moves the system- arrow keys
 		if (Input.GetKey (KeyCode.LeftArrow)) 
 		{
 			//camera rotates to the left
@@ -126,15 +127,18 @@ public class ControlMethods : MonoBehaviour {
 			transform.Rotate (Vector3.up, turnSpeed * Time.deltaTime);
 		}
 
+		//speed increase- shift button
 		if(Input.GetKey (KeyCode.RightShift))
 		{
 			rb.velocity = new Vector3 (10, 0, 0); //this needs to be fixed
 		}
 
+		//not working
 		if (Input.GetKey (KeyCode.M) && mapCamera.enabled == false) 
 		{
 			mapCamera.enabled = !mapCamera.enabled;
 		}
+
 		if (Input.GetKey (KeyCode.M) && mapCamera.isActiveAndEnabled == true)
 		{
 			//this is not working
@@ -143,15 +147,8 @@ public class ControlMethods : MonoBehaviour {
 			//mapCamera.SetActive(true);
 			//mapCamera.isActiveAndEnabled = false; 
 		}
-
-		if (Input.GetKey (KeyCode.N)) { //for testing toggling cameras
-			if (mapCamera.enabled == true) {
-				mapCamera.enabled = false;
-			}
-		}
-
-
-		//THESE WORK IN HERE
+			
+		//THESE WORK IN HERE!
 		if (Input.GetKey (KeyCode.W)) 
 		{
 			//restrict degree of tilt possible 
@@ -160,10 +157,11 @@ public class ControlMethods : MonoBehaviour {
 			Debug.Log(moveVertical);
 			if (moveVertical < 0.34f) 
 			{
-					//transform.Rotate (Vector3.left, turnSpeed * Time.deltaTime);
+				//transform.Rotate (Vector3.left, turnSpeed * Time.deltaTime);
 				transform.Rotate(-1, 0,0);
 			}
 		}
+
 		if (Input.GetKey (KeyCode.S)) 
 		{
 			//restricts degree of tilt possible
@@ -176,6 +174,7 @@ public class ControlMethods : MonoBehaviour {
 			}
 		//	transform.Rotate(Vector3.left, -turnSpeed * Time.deltaTime); 
 		}
+
 		if (Input.GetKey (KeyCode.A)) 
 		{
 			//restricts degree of tilt possible
@@ -188,6 +187,7 @@ public class ControlMethods : MonoBehaviour {
 			}
 				
 		}
+
 		if (Input.GetKey (KeyCode.D)) 
 		{
 			//restricts degree of tile possible
@@ -199,6 +199,7 @@ public class ControlMethods : MonoBehaviour {
 			}
 		}
 
+		//keeps system from roaming/rolling when idle
 		if(!Input.anyKeyDown)
 		{
 			//no buttons are pressed
