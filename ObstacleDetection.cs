@@ -88,84 +88,36 @@ public class ObstacleDetection : MonoBehaviour {
 			speedDecrease(ref speed);
 
 			//checking which direction obstacle is in relative to player
-			if (Physics.Raycast (transform.position, forward, out hit, detectionDistance * 2)) 
-			{
-				Debug.Log ("Obstacle in front!");
+			//front, front-right diagonal, front-left diagonal
+			if(Physics.Raycast (transform.position, forward, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance * 1.5f)){
 				theHitObject = hit.collider.gameObject; //sets to obstacle at hand
-
-				frontBackObstacleWarning (theHitObject); //changes color to red
+				redObstacleWarning (theHitObject); //changes color to red
 			}
-			if (Physics.Raycast (transform.position, back, out hit, detectionDistance * 2)) 
-			{
-				Debug.Log ("Obstacle behind!");
+			if(Physics.Raycast (transform.position, back, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, left, out hit, detectionDistance * 1.7f) || Physics.Raycast (transform.position, right, out hit, detectionDistance * 1.7f)
+				|| Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance * 1.5f)){
 				theHitObject = hit.collider.gameObject;
-
-				frontBackObstacleWarning (theHitObject); //changes color to red
-			}
-			if (Physics.Raycast (transform.position, left, out hit, detectionDistance * 1.7f))
-			{
-				Debug.Log ("Obstacle to the left!");
-				theHitObject = hit.collider.gameObject; 
-
-				leftRightObstacleWarning (theHitObject); //changes color to yellow
-			}
-			if (Physics.Raycast (transform.position, right, out hit, detectionDistance * 1.7f))
-			{
-				Debug.Log ("Obstacle to the right!");
-				theHitObject = hit.collider.gameObject; 
-
-				leftRightObstacleWarning (theHitObject); //changes color to yellow
-			}
-			if (Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance * 1.5f)) 
-			{
-				Debug.Log ("Obstacle in front right diagonal!");
-				theHitObject = hit.collider.gameObject; 
-
-				frontBackObstacleWarning (theHitObject); //changes color to red
-			}
-			if (Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance * 1.5f)) 
-			{
-				Debug.Log ("Obstacle in back right diagonal!");
-				theHitObject = hit.collider.gameObject;
-
-				leftRightObstacleWarning (theHitObject); //changes color to yellow
-			}
-			if (Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance * 1.5f)) 
-			{
-				Debug.Log ("Obstacle in back left diagonal!");
-				theHitObject = hit.collider.gameObject; 
-
-				leftRightObstacleWarning (theHitObject); //changes color to yellow
-			}
-			if (Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance * 1.5f)) 
-			{
-				Debug.Log ("Obstacle in front left diagonal!");
-				theHitObject = hit.collider.gameObject;
-
-				frontBackObstacleWarning (theHitObject); //changes color to red
+				yellowObstacleWarning (theHitObject); //changes color to yellow
 			}
 		}
 		checkObstacleWarning (); //if all obstacles are far enough away, will turn white again
 	}
 
 	//if an obstacle has been detected as a warning in front/back of player
-	GameObject frontBackObstacleWarning(GameObject objectWarning)
+	GameObject redObstacleWarning(GameObject objectWarning)
 	{
 		//visual warnings take place here- red to front and back obstacles (most severe) 
 		objectWarning.GetComponent<Renderer>().material.color = new Color(1,0,0,1); //red
-
 		return objectWarning;
 	}
 
 	//if an obstacle has been detected as a warning on left/right of player
-	GameObject leftRightObstacleWarning(GameObject objectWarning)
+	GameObject yellowObstacleWarning(GameObject objectWarning)
 	{
 		//visual warnings take place here- yellow to left and right obstacles (less severe)
 		//converting doubles to floats for color
 		float gValue = (float) 0.92;
 		float bValue = (float)0.016;
 		objectWarning.GetComponent<Renderer> ().material.color = new Color (1, gValue, bValue, 1); //yellow- from docs.unity3d.com
-
 		return objectWarning;
 	}
 
@@ -188,8 +140,9 @@ public class ObstacleDetection : MonoBehaviour {
 			//restoring speed to normal 
 			speed = 5.0f;
 
-			deskObstacles = GameObject.FindGameObjectsWithTag ("desk"); 
-
+			//Testing purposes: deskObstacles = GameObject.FindGameObjectsWithTag ("desk");
+			//FIXME: Check out why we have 2 arrays (one for walls and another for desks). Can we just use one?
+			deskObstacles = GameObject.FindGameObjectsWithTag ("furniture");
 			foreach (GameObject deskObstacle in deskObstacles) //turns all desks back to white
 			{
 				deskObstacle.GetComponent<Renderer> ().material.color = new Color (1, 1, 1, 1); //white
@@ -226,19 +179,19 @@ public class ObstacleDetection : MonoBehaviour {
 	//these tags will be changed when the environment is changed to a living room setting
 	void OnCollisionEnter(Collision col)
 	{
-		if(col.gameObject.tag == "desk" || col.gameObject.tag == "wall")
+		if(col.gameObject.tag == "desk" || col.gameObject.tag == "wall" || col.gameObject.tag == "furniture")
 		{
-			rb.AddForce(0,0,0, ForceMode.VelocityChange);
+			rb.AddForce(0,0,0, ForceMode.VelocityChange);  //changes speed to zero
 		}
 	}
 		
 	// Update is called once per frame
 	void Update () {
-		
 		//if no obstacle is too close in front, can move forward
 		if (!Physics.Raycast (transform.position, forward, detectionDistance)) 
 		{
-			if (!Physics.Raycast (transform.position, left, detectionDistance) && !Physics.Raycast (transform.position, right, detectionDistance)) 
+			//FIXME: Test this code && see if by adding a check for back it works
+			if (!Physics.Raycast (transform.position, left, detectionDistance) && !Physics.Raycast (transform.position, right, detectionDistance) && !Physics.Raycast (transform.position, back, detectionDistance)) 
 			{
 				//need to check 1st and 4th quadrant diagonals (x is positive)
 				//player isn't too close to obstacle in front
@@ -301,7 +254,7 @@ public class ObstacleDetection : MonoBehaviour {
 					
 						if (Input.GetKey (KeyCode.DownArrow)) 
 						{
-						transform.Translate (-Vector3.forward * speed * Time.deltaTime);
+							transform.Translate (-Vector3.forward * speed * Time.deltaTime);
 						}
 
 					if(!Physics.Raycast(transform.position, diagonal4, detectionDistance))
