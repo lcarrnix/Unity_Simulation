@@ -12,10 +12,12 @@ public class ObstacleDetection : MonoBehaviour {
 	private GameObject theHitObject; //for obstacle detection
 	public GameObject[] deskObstacles; //for clearing obstacle warnings- desks
 	public GameObject[] wallObstacles; //for clearing obstacle warnings- walls
+	public GameObject[] pathObjects; 
 	private RaycastHit hit;
 	private float speed;
 	public float detectionDistance; //for obstacle detection
 	private float decreasedSpeed; //for obstacle avoidance
+	private float increasedSpeed;
 
 	//direction vectors
 	private Vector3 forward;
@@ -36,6 +38,10 @@ public class ObstacleDetection : MonoBehaviour {
 
 		rb = PlayerControlInstance.rb;
 
+		increasedSpeed = 5.0f;
+		decreasedSpeed = 1.0f;
+		speed = increasedSpeed;
+
 		//direction vectors from space.world
 		forward = transform.TransformDirection (Vector3.forward);
 		back = transform.TransformDirection (Vector3.back);
@@ -51,8 +57,6 @@ public class ObstacleDetection : MonoBehaviour {
 	void FixedUpdate() //before physics
 	{
 		Vector3 movement = ControlMethInstance.movement;
-		speed = 5.0f;
-		decreasedSpeed = 1.0f;
 
 		//updating vectors every frame
 		forward = transform.TransformDirection (Vector3.forward);
@@ -78,25 +82,31 @@ public class ObstacleDetection : MonoBehaviour {
 	void obstacleDetection(ref float speed)
 	{
 		//Debug.Log ("im in obstacleDetection and the speed is " + speed);
-		if ((Physics.Raycast (transform.position, forward, detectionDistance * 2)) || (Physics.Raycast (transform.position, back, detectionDistance * 2)) ||
+		if ((Physics.Raycast (transform.position, forward, detectionDistance * 2f)) || (Physics.Raycast (transform.position, back, detectionDistance * 2f)) ||
 		    (Physics.Raycast (transform.position, left, detectionDistance * 1.7f)) || (Physics.Raycast (transform.position, right, detectionDistance * 1.7f)) ||
 		    (Physics.Raycast (transform.position, diagonal1, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, diagonal2, detectionDistance * 1.5f)) ||
 		    (Physics.Raycast (transform.position, diagonal3, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, diagonal4, detectionDistance * 1.5f))) 
 		{
 			//there is an obstacle near user 
 			//slowing down user's speed
-			speedDecrease(ref speed);
+			speed = decreasedSpeed;
 
 			//checking which direction obstacle is in relative to player
 			//front, front-right diagonal, front-left diagonal
 			if(Physics.Raycast (transform.position, forward, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance * 1.5f)){
 				theHitObject = hit.collider.gameObject; //sets to obstacle at hand
-				redObstacleWarning (theHitObject); //changes color to red
+				//pathObjects = GameObject.FindGameObjectsWithTag("path");
+				if (theHitObject.CompareTag("furniture") || theHitObject.CompareTag("wall")){
+					redObstacleWarning (theHitObject); //changes color to red
+				}
 			}
 			if(Physics.Raycast (transform.position, back, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, left, out hit, detectionDistance * 1.7f) || Physics.Raycast (transform.position, right, out hit, detectionDistance * 1.7f)
 				|| Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance * 1.5f)){
 				theHitObject = hit.collider.gameObject;
-				yellowObstacleWarning (theHitObject); //changes color to yellow
+				//pathObjects = GameObject.FindGameObjectsWithTag("path");
+				if (theHitObject.CompareTag("furniture") || theHitObject.CompareTag("wall")){
+						yellowObstacleWarning (theHitObject); //changes color to yellow
+					}
 			}
 		}
 		checkObstacleWarning (); //if all obstacles are far enough away, will turn white again
@@ -121,24 +131,16 @@ public class ObstacleDetection : MonoBehaviour {
 		return objectWarning;
 	}
 
-	//speed is decreased substantially to assist user in avoiding an obstacle
-	float speedDecrease(ref float speed)
-	{
-		//near obstacle in any direction - need to decrease speed to help warn user, help them detect the obstacle, and avoid the obstacle itself
-		speed = decreasedSpeed;
-		return speed;
-	}
-
 	void checkObstacleWarning() //overwriting
 	{
 		//checking if all desks are far away from user to not be a warning anymore- checks front, back, left, right, and diagonals
-		if (!Physics.Raycast (transform.position, forward, out hit, detectionDistance * 2) && !Physics.Raycast(transform.position, back, out hit, detectionDistance * 2) 
+		if (!Physics.Raycast (transform.position, forward, out hit, detectionDistance * 2f) && !Physics.Raycast(transform.position, back, out hit, detectionDistance * 2f) 
 			&& !Physics.Raycast(transform.position, left, out hit, detectionDistance * 1.7f) && !Physics.Raycast(transform.position, right, out hit, detectionDistance * 1.7f)
 			&& !Physics.Raycast(transform.position, diagonal1, out hit, detectionDistance * 1.5f) && !Physics.Raycast(transform.position, diagonal2, out hit, detectionDistance * 1.5f)
 			&& !Physics.Raycast(transform.position, diagonal3, out hit, detectionDistance * 1.5f) && !Physics.Raycast(transform.position, diagonal4, out hit, detectionDistance * 1.5f)) 
 		{
 			//restoring speed to normal 
-			speed = 5.0f;
+			speed = increasedSpeed;
 
 			//Testing purposes: deskObstacles = GameObject.FindGameObjectsWithTag ("desk");
 			//FIXME: Check out why we have 2 arrays (one for walls and another for desks). Can we just use one?
@@ -161,7 +163,6 @@ public class ObstacleDetection : MonoBehaviour {
 	void checkObstacleWarning(Vector3 direction, GameObject objectWarning)
 	{
 		//check if object is far enough away
-		//FIXME: Duoble check not.
 		if (!Physics.Raycast (transform.position, direction, out hit, detectionDistance * 2)) 
 		{
 			clearObstacleWarning (theHitObject);
@@ -172,7 +173,7 @@ public class ObstacleDetection : MonoBehaviour {
 	{
 		//object is far enough away from player after a warning
 		objectWarning.GetComponent<Renderer>().material.color = new Color(1,1,1,1); //white
-		speed = 5.0f; //restoring max speed
+		speed = increasedSpeed; //restoring max speed
 		return objectWarning;
 	}
 
@@ -184,126 +185,104 @@ public class ObstacleDetection : MonoBehaviour {
 			rb.AddForce(0,0,0, ForceMode.VelocityChange);  //changes speed to zero
 		}
 	}
-		
-	// Update is called once per frame
-	void Update () {
-		//if no obstacle is too close in front, can move forward
-		if (!Physics.Raycast (transform.position, forward, detectionDistance)) 
+
+	/*****************************************************************************************************************************************************************************************************************/
+	//FIXME: The purpose of this method is to cut down on the long code in in Update() for forward, back, and <new> left, right, diagonals! :)
+	//This only gets  called when there is nothing forward
+	void moveForward () {
+		//FIXME: figure out why user still lmoves forward even though there is an obstacle for certain angles
+		if (!Physics.Raycast (transform.position, left, detectionDistance) && !Physics.Raycast (transform.position, right, detectionDistance))
 		{
-			//FIXME: Test this code && see if by adding a check for back it works
-			if (!Physics.Raycast (transform.position, left, detectionDistance) && !Physics.Raycast (transform.position, right, detectionDistance) && !Physics.Raycast (transform.position, back, detectionDistance)) 
+			//need to check 1st and 4th quadrant diagonals; player isn't too close to obstacle in front
+			//FIXME: Why 4th? Why not 2nd? Note- doesn't really make a difference when tested on 06/07 at 11 am
+			if (Input.GetKey (KeyCode.UpArrow) && !Physics.Raycast (transform.position, diagonal1, detectionDistance) && !Physics.Raycast (transform.position, diagonal4, detectionDistance)) 
 			{
-				//need to check 1st and 4th quadrant diagonals (x is positive)
-				//player isn't too close to obstacle in front
-				if (!Physics.Raycast (transform.position, diagonal1, detectionDistance) && !Physics.Raycast (transform.position, diagonal4, detectionDistance)) 
-				{
-					if (Input.GetKey (KeyCode.UpArrow)) 
-					{
-						//Debug.Log ("in the all clear to move forward");
-						//camera/player move forward
-						transform.Translate (Vector3.forward * speed * Time.deltaTime); //move forwards
-					} 
-				} 
-				else 
-				{ //obstacle near diagonals 
-					//for testing accuracy
-					if (Physics.Raycast (transform.position, diagonal1, detectionDistance)) 
-					{
-						//Debug.Log ("OBSTACLE IN FRONT RIGHT DIAGONAL");
-					} 
-					if (Physics.Raycast (transform.position, diagonal4, detectionDistance)) 
-					{
-						//Debug.Log ("OBSTACLE IN FRONT LEFT DIAGONAL");
-					} //end testing for accuracy
-					if (Input.GetKey (KeyCode.DownArrow))
-					{ //free to move backwards
-						transform.Translate (-Vector3.forward * speed * Time.deltaTime); //move backwards away from obstacle
-					}
-				}//end of else for diagonals
-			}//end of left right- there is an obstacle on either side
-			else 
-			{ //obstacle on left or right, but not forward
-				if (Physics.Raycast (transform.position, right, detectionDistance)) 
-				{
-					//obstacle on the right
-					//Debug.Log ("OBSTACLE ON THE RIGHT SIDE");
-
-					if (Input.GetKey (KeyCode.DownArrow)) 
-					{
-						transform.Translate (-Vector3.forward * speed * Time.deltaTime);
-					}
-
-					if (!Physics.Raycast (transform.position, diagonal1, detectionDistance)) 
-					{ //not near obstacle on diagonal, so can move forward
-
-						if (Input.GetKey (KeyCode.UpArrow)) 
-						{
-							transform.Translate (Vector3.forward * speed * Time.deltaTime);
-						}
-					}
-					else 
-					{ //obstacle hits diagonal too
-						//Debug.Log ("OBSTACLE IN FRONT RIGHT DIAGONAL");
-					}
-				}
-			//end of if on right side
-				if (Physics.Raycast (transform.position, left, detectionDistance)) 
-				{
-						//obstacle on the left
-						//Debug.Log ("OBSTACLE ON THE LEFT SIDE");
-					
-						if (Input.GetKey (KeyCode.DownArrow)) 
-						{
-							transform.Translate (-Vector3.forward * speed * Time.deltaTime);
-						}
-
-					if(!Physics.Raycast(transform.position, diagonal4, detectionDistance))
-					{
-						if (Input.GetKey (KeyCode.UpArrow)) 
-						{
-							transform.Translate (Vector3.forward * speed * Time.deltaTime); 
-						}
-					} 
-					else 
-					{//obstacle hits diagonal too
-						//Debug.Log ("OBSTACLE IN FRONT LEFT DIAGONAL");
-					}
-				}//end of if on left side
-					
-			}//end of else statement- left/right obstacles
-		}//end of forward is clear if statement
-
-		//there is an obstacle in front of user
-		else
-		{
-			//for testing accuracy
-			if(Physics.Raycast(transform.position, diagonal1, detectionDistance))
-			{
-				//Debug.Log("OBSTACLE IN FRONT RIGHT DIAGONAL!");
+				Debug.Log ("All clear to move forward");
+				transform.Translate (Vector3.forward * speed * Time.deltaTime);
 			}
-			if(Physics.Raycast(transform.position, diagonal4, detectionDistance))
+			else 
 			{
-				//Debug.Log("OBSTACLE IN FRONT LEFT DIAGONAL!");
-			} //end testing for accuracy
+				//FIXME: We need to check if we are actually free to move backwards before moving
+				if (Input.GetKey (KeyCode.DownArrow) && !Physics.Raycast (transform.position, back, detectionDistance))
+				{
+					transform.Translate (-Vector3.forward * speed * Time.deltaTime); //move backwards away from obstacle
+				}
+			}
+		}//end of left, right, and back
+		else 
+		{ //obstacle on left or right, but not forward
 			if (Physics.Raycast (transform.position, right, detectionDistance)) 
 			{
-				//Debug.Log ("OBSTACLE TO THE FRONT RIGHT");
+				if (Input.GetKey (KeyCode.DownArrow)) 
+				{
+					transform.Translate (-Vector3.forward * speed * Time.deltaTime);
+				}
+
+				if (!Physics.Raycast (transform.position, diagonal1, detectionDistance)) 
+				{ //not near obstacle on diagonal, so can move forward
+
+					if (Input.GetKey (KeyCode.UpArrow)) 
+					{
+						transform.Translate (Vector3.forward * speed * Time.deltaTime);
+					}
+				}
 			}
 			if (Physics.Raycast (transform.position, left, detectionDistance)) 
 			{
-				//Debug.Log ("OBSTACLE TO THE FRONT LEFT!");
-			}
-			if (Input.GetKey (KeyCode.DownArrow)) //can still go backwards
-			{
-				transform.Translate (-Vector3.forward * speed * Time.deltaTime);
-			}
-		}//end of else statement- went through everything for front 
+				if (Input.GetKey (KeyCode.DownArrow)) 
+				{
+					transform.Translate (-Vector3.forward * speed * Time.deltaTime);
+				}
 
+				if(!Physics.Raycast(transform.position, diagonal4, detectionDistance))
+				{
+					if (Input.GetKey (KeyCode.UpArrow)) 
+					{
+						transform.Translate (Vector3.forward * speed * Time.deltaTime); 
+					}
+				} 
+			}//end of if on left side
+		}//end of else statement- left/right obstacles
+	}
 
-		//checks if player is too close to obstacle in back, left or right sides- restricts backward movement if so
-		//still able to rotate and move forward away from obstacle 
+	void obstacleInFront(){
+		//for testing accuracy
+		if(Physics.Raycast(transform.position, diagonal1, detectionDistance))
+		{
+			//Debug.Log("OBSTACLE IN FRONT RIGHT DIAGONAL!");
+		}
+		if(Physics.Raycast(transform.position, diagonal4, detectionDistance))
+		{
+			//Debug.Log("OBSTACLE IN FRONT LEFT DIAGONAL!");
+		} //end testing for accuracy
+		if (Physics.Raycast (transform.position, right, detectionDistance)) 
+		{
+			//Debug.Log ("OBSTACLE TO THE FRONT RIGHT");
+		}
+		if (Physics.Raycast (transform.position, left, detectionDistance)) 
+		{
+			//Debug.Log ("OBSTACLE TO THE FRONT LEFT!");
+		}
+		//FIXME: should the user still be allowed to go backwards? Shouldn't we check if there's something behind them?
+		if (Input.GetKey (KeyCode.DownArrow)) //can still go backwards
+		{
+			transform.Translate (-Vector3.forward * speed * Time.deltaTime);
+		}
+	}
 
-		//if backward distance to obstacle increases (player turns away/moves from obstacle enough) backward movement will be available again
+	// Update is called once per frame
+	void Update () {
+		//if no obstacle is too close in front, can move forward
+		if (!Physics.Raycast (transform.position, forward, detectionDistance)) {
+			moveForward ();
+		}
+		//there is an obstacle in front of user
+		else {
+			obstacleInFront ();
+		}//went through everything for front
+
+		//checks if player is too close to obstacle in back, left or right sides- restricts backward movement if so; still able to rotate and move forward away from obstacle
+		//if backward distance to obstacle increases (player t	urns away/moves from obstacle enough) backward movement will be available again
 		if (!Physics.Raycast (transform.position, back, detectionDistance)) 
 		{ //checking distance in back
 			if (!Physics.Raycast (transform.position, left, detectionDistance) && !Physics.Raycast (transform.position, right, detectionDistance)) 
@@ -395,19 +374,19 @@ public class ObstacleDetection : MonoBehaviour {
 			//for testing accuracy
 			if (Physics.Raycast (transform.position, diagonal2, detectionDistance)) 
 			{
-				Debug.Log ("OBSTACLE IN BACK RIGHT DIAGONAL!");
+				//Debug.Log ("OBSTACLE IN BACK RIGHT DIAGONAL!");
 			}
 			if (Physics.Raycast (transform.position, diagonal3, detectionDistance)) 
 			{
-				Debug.Log ("OBSTACLE IN BACK LEFT DIAGONAL!");
+				//Debug.Log ("OBSTACLE IN BACK LEFT DIAGONAL!");
 			}//end testing for accuracy
 			if (Physics.Raycast (transform.position, right, detectionDistance))
 			{
-				Debug.Log ("OBSTACLE TO THE BACK RIGHT!");
+				//Debug.Log ("OBSTACLE TO THE BACK RIGHT!");
 			}
 			if (Physics.Raycast (transform.position, left, detectionDistance)) 
 			{
-				Debug.Log ("OBSTACLE TO THE BACK LEFT");
+				//Debug.Log ("OBSTACLE TO THE BACK LEFT");
 			}
 
 			if (Input.GetKey (KeyCode.UpArrow)) 
@@ -419,5 +398,7 @@ public class ObstacleDetection : MonoBehaviour {
 		checkObstacleWarning (); //idk about this
 
 	}//end of Update()
+
+
 } 
 
