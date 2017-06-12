@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class ObstacleDetection : MonoBehaviour {
 
@@ -14,10 +16,9 @@ public class ObstacleDetection : MonoBehaviour {
 	public GameObject[] wallObstacles; //for clearing obstacle warnings- walls
 	public GameObject[] pathObjects; 
 	private RaycastHit hit;
-	private float speed;
+	public float speed;
 	public float detectionDistance; //for obstacle detection
 	private float decreasedSpeed; //for obstacle avoidance
-	private float increasedSpeed;
 
 	//direction vectors
 	private Vector3 forward;
@@ -30,17 +31,25 @@ public class ObstacleDetection : MonoBehaviour {
 	private Vector3 diagonal3;
 	private Vector3 diagonal4;
 
+	public Slider speedSlider;
+
+	public void changeSpeedSlider(float value) {
+		speed = value;
+	}
+
 	// Use this for initialization
 	void Start () 
 	{
+		//I tried setting up the slider like in InterfaceScript.cs, but it kept giving me the error messge about null...
+		speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
+
 		PlayerControlInstance = GetComponent<PlayerController> ();
 		ControlMethInstance = GetComponent<ControlMethods> ();
 
 		rb = PlayerControlInstance.rb;
 
-		increasedSpeed = 5.0f;
 		decreasedSpeed = 1.0f;
-		speed = increasedSpeed;
+		speed = speedSlider.value; //current value of the speed slider (default 1)
 
 		//direction vectors from space.world
 		forward = transform.TransformDirection (Vector3.forward);
@@ -48,7 +57,6 @@ public class ObstacleDetection : MonoBehaviour {
 		left = transform.TransformDirection (Vector3.left);
 		right = transform.TransformDirection (Vector3.right);
 
-		//FIXME: test these diagonals
 		diagonal1 = transform.TransformDirection (1, 0, 1); //first quadrant diagonal for obstacle detection
 		diagonal2 = transform.TransformDirection(1, 0, -1); //2nd quadrant
 		diagonal3 = transform.TransformDirection (-1, 0, -1); //3rd quadrant
@@ -141,7 +149,7 @@ public class ObstacleDetection : MonoBehaviour {
 			&& !Physics.Raycast(transform.position, diagonal3, out hit, detectionDistance * 1.5f) && !Physics.Raycast(transform.position, diagonal4, out hit, detectionDistance * 1.5f)) 
 		{
 			//restoring speed to normal 
-			speed = increasedSpeed;
+			speed = speedSlider.value;
 
 			//Testing purposes: deskObstacles = GameObject.FindGameObjectsWithTag ("desk");
 			//FIXME: Check out why we have 2 arrays (one for walls and another for desks). Can we just use one?
@@ -172,7 +180,7 @@ public class ObstacleDetection : MonoBehaviour {
 	{
 		//object is far enough away from player after a warning
 		objectWarning.GetComponent<Renderer>().material.color = new Color(1,1,1,1); //white
-		speed = increasedSpeed; //restoring max speed
+		speed = speedSlider.value; //restoring max speed
 		return objectWarning;
 	}
 
@@ -202,6 +210,7 @@ public class ObstacleDetection : MonoBehaviour {
 	void Update(){
 		moveForward ();
 		moveBackward ();
+		//Debug.Log ("Current speed: " + speed);
 		checkObstacleWarning (); //idk about this
 	}
 } 

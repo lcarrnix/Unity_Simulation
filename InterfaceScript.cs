@@ -14,10 +14,10 @@ public class InterfaceScript : MonoBehaviour {
 	public Canvas helpMenu;
 
 	//things on main display
-	public Button exitBtn;
 	public Slider zoomSlider;
-	public Button settings;
 	public Slider volumeSlider;
+	public Button exitBtn;
+	public Button settings;
 	public Toggle mapView;
 
 	//things on settings menu
@@ -51,8 +51,8 @@ public class InterfaceScript : MonoBehaviour {
 		//main display components
 		exitBtn = exitBtn.GetComponent<Button> ();
 		zoomSlider = zoomSlider.GetComponent<Slider> ();
-		settings = settings.GetComponent<Button> ();
 		volumeSlider = volumeSlider.GetComponent<Slider> ();
+		settings = settings.GetComponent<Button> ();
 		mapView = mapView.GetComponent<Toggle> ();
 
 		//settings menu components
@@ -81,8 +81,8 @@ public class InterfaceScript : MonoBehaviour {
 
 		exitBtn.enabled = true;
 		zoomSlider.enabled = true;
-		settings.enabled = true;
 		volumeSlider.enabled = true;
+		settings.enabled = true;
 		mapView.enabled = true;
 
 		//scroll.enabled = false;
@@ -96,12 +96,13 @@ public class InterfaceScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update()
 	{
-		FadeText (); //for testing hover over displays
+		//FadeText (); //for testing hover over displays
 	}
 
 	public void SettingsMenuDisplay()
 	{
 		//displaying the settings menu, hiding/disabling everything else
+		mainInterface.enabled = false; //hiding other canvas
 		settingsMenu.enabled = true;
 		helpMenu.enabled = false;
 
@@ -112,14 +113,11 @@ public class InterfaceScript : MonoBehaviour {
 		helpBtn.enabled = true;
 		closeSettings.enabled = true;
 
-		//hiding other canvas
-		mainInterface.enabled = false; 
-
 		//disabling buttons on main interface
 		exitBtn.enabled = false;
 		zoomSlider.enabled = false;
-		settings.enabled = false;
 		volumeSlider.enabled = false;
+		settings.enabled = false;
 		mapView.enabled = false;
 
 		//pressing close on settings menu will send to NoPress()
@@ -127,14 +125,11 @@ public class InterfaceScript : MonoBehaviour {
 
 	public void HelpMenuDisplay()
 	{
-		//displaying the help menu, hiding/dissabling everything else
-		helpMenu.enabled = true;
+		settingsMenu.enabled = false; //hiding settings canvas
+		helpMenu.enabled = true; //displaying the help menu, hiding/dissabling everything else
 
 		//help menu component
 		closeHelp.enabled = true;
-
-		//hiding settings canvas
-		settingsMenu.enabled = false;
 
 		//disabling buttons on settings menu
 		//scroll.enabled = false;
@@ -151,12 +146,11 @@ public class InterfaceScript : MonoBehaviour {
 		quitMenu.enabled = true;
 		exitBtn.enabled = false;
 		zoomSlider.enabled = false;
-		settings.enabled = false;
 		volumeSlider.enabled = false;
+		settings.enabled = false;
 		mapView.enabled = false;
 
 		//need to disable other buttons on interface
-
 		//pressing yes will send to ExitGame()
 		//pressing no will send to NoPress()
 	}
@@ -166,10 +160,11 @@ public class InterfaceScript : MonoBehaviour {
 		mainInterface.enabled = true;
 		quitMenu.enabled = false;
 		settingsMenu.enabled = false;
+
 		exitBtn.enabled = true;
 		zoomSlider.enabled = true;
-		settings.enabled = true;
 		volumeSlider.enabled = true;
+		settings.enabled = true;
 		mapView.enabled = true;
 		//enable all other buttons on interface
 	}
@@ -185,6 +180,7 @@ public class InterfaceScript : MonoBehaviour {
 	{
 		displayInfo = false; 
 	}
+
 	void FadeText()
 	{
 		if (displayInfo == true) //hover over display will show
