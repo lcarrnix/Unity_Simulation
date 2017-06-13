@@ -6,16 +6,21 @@ using UnityEngine.SceneManagement;
 
 public class ObstacleDetection : MonoBehaviour {
 
-	public GameObject Player;
 	PlayerController PlayerControlInstance; //instance of PlayerController class
 	ControlMethods ControlMethInstance; //instance of ControlMethods class
 
 	public Rigidbody rb; //for collisions and parking system in place
+
+	public GameObject Player;
+	public GameObject dock;
 	private GameObject theHitObject; //for obstacle detection
+
 	public GameObject[] deskObstacles; //for clearing obstacle warnings- desks
 	public GameObject[] wallObstacles; //for clearing obstacle warnings- walls
 	public GameObject[] pathObjects; 
+
 	private RaycastHit hit;
+
 	public float speed;
 	public float detectionDistance; //for obstacle detection
 	private float decreasedSpeed; //for obstacle avoidance
@@ -40,6 +45,7 @@ public class ObstacleDetection : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
+		dock = GameObject.Find ("Trigger");
 		//I tried setting up the slider like in InterfaceScript.cs, but it kept giving me the error messge about null...
 		speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
 
@@ -88,17 +94,12 @@ public class ObstacleDetection : MonoBehaviour {
 
 	//main function for detecting obstacles
 	//will call functions to display colors corresponding to obstacles and decrease speed for obstacle avoidance
-	void obstacleDetection(ref float speed)
-	{
+	void obstacleDetection(ref float speed) {
 		//Debug.Log ("im in obstacleDetection and the speed is " + speed);
-		if ((Physics.Raycast (transform.position, forward, detectionDistance * 2f)) || (Physics.Raycast (transform.position, back, detectionDistance * 2f)) ||
-		    (Physics.Raycast (transform.position, left, detectionDistance * 1.7f)) || (Physics.Raycast (transform.position, right, detectionDistance * 1.7f)) ||
-		    (Physics.Raycast (transform.position, diagonal1, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, diagonal2, detectionDistance * 1.5f)) ||
-		    (Physics.Raycast (transform.position, diagonal3, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, diagonal4, detectionDistance * 1.5f))) 
-		{
-			//there is an obstacle near user 
-			//slowing down user's speed
-			speed = decreasedSpeed;
+		if ( (Physics.Raycast (transform.position, forward, detectionDistance * 2f)) || (Physics.Raycast (transform.position, back, detectionDistance * 2f)) ||
+			(Physics.Raycast (transform.position, left, detectionDistance * 1.7f)) || (Physics.Raycast (transform.position, right, detectionDistance * 1.7f)) ||
+			(Physics.Raycast (transform.position, diagonal1, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, diagonal2, detectionDistance * 1.5f)) ||
+			(Physics.Raycast (transform.position, diagonal3, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, diagonal4, detectionDistance * 1.5f)) ) {
 
 			//checking which direction obstacle is in relative to player
 			//front, front-right diagonal, front-left diagonal
@@ -106,6 +107,8 @@ public class ObstacleDetection : MonoBehaviour {
 				theHitObject = hit.collider.gameObject; //sets to obstacle at hand
 				//pathObjects = GameObject.FindGameObjectsWithTag("path");
 				if (theHitObject.CompareTag("furniture") || theHitObject.CompareTag("wall")){
+					//there is an obstacle near user, so slowing down user's speed
+					speed = decreasedSpeed;
 					redObstacleWarning (theHitObject); //changes color to red
 				}
 			}
@@ -114,11 +117,13 @@ public class ObstacleDetection : MonoBehaviour {
 				theHitObject = hit.collider.gameObject;
 				//pathObjects = GameObject.FindGameObjectsWithTag("path");
 				if (theHitObject.CompareTag("furniture") || theHitObject.CompareTag("wall")){
-						yellowObstacleWarning (theHitObject); //changes color to yellow
-					}
+					speed = decreasedSpeed;
+					yellowObstacleWarning (theHitObject); //changes color to yellow
+				}
 			}
+
+			checkObstacleWarning (); //if all obstacles are far enough away, will turn white again
 		}
-		checkObstacleWarning (); //if all obstacles are far enough away, will turn white again
 	}
 
 	//if an obstacle has been detected as a warning in front/back of player
@@ -152,7 +157,6 @@ public class ObstacleDetection : MonoBehaviour {
 			speed = speedSlider.value;
 
 			//Testing purposes: deskObstacles = GameObject.FindGameObjectsWithTag ("desk");
-			//FIXME: Check out why we have 2 arrays (one for walls and another for desks). Can we just use one?
 			deskObstacles = GameObject.FindGameObjectsWithTag ("furniture");
 			foreach (GameObject deskObstacle in deskObstacles) //turns all desks back to white
 			{
@@ -195,17 +199,33 @@ public class ObstacleDetection : MonoBehaviour {
 
 	//checks if it's all good to move forward and moves forward if it is
 	void moveForward (){
+		//there is nothing in front
 		if (Input.GetKey (KeyCode.UpArrow) && !Physics.Raycast (transform.position, forward, detectionDistance) && !Physics.Raycast (transform.position, diagonal1, detectionDistance) && !Physics.Raycast (transform.position, diagonal4, detectionDistance)) {
 			transform.Translate (Vector3.forward * speed * Time.deltaTime);
-		} 
+		}
+		//can still move forward if object in front is dock
+		else if(Input.GetKey (KeyCode.UpArrow) && (Physics.Raycast (transform.position, forward, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance))){
+			if(hit.collider.gameObject == dock){
+				//Debug.Log ("DOCK is HIT OBJECT");
+				transform.Translate (Vector3.forward * speed * Time.deltaTime);
+			}
+		}
 	}
 
 	//checks if it's all good to move backward and moves backward if it is
 	void moveBackward(){
+		//there is nothing in back
 		if (Input.GetKey (KeyCode.DownArrow) && !Physics.Raycast (transform.position, back, detectionDistance) && !Physics.Raycast (transform.position, diagonal2, detectionDistance) && !Physics.Raycast (transform.position, diagonal3, detectionDistance)) {
 			transform.Translate (-Vector3.forward * speed * Time.deltaTime);
-		} 
+		}
+		//can still move backward if object in back is dock
+		else if(Input.GetKey (KeyCode.DownArrow) && (Physics.Raycast (transform.position, back, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance)) ){
+			if (hit.collider.gameObject == dock) {
+				transform.Translate (-Vector3.forward * speed * Time.deltaTime);
+			}
+		}
 	}
+
 	// Update is called once per frame
 	void Update(){
 		moveForward ();
