@@ -6,7 +6,7 @@ using UnityEngine.SceneManagement;
 
 //the script for all of the interface/display elements in the main scene (actual simulation environment)
 public class InterfaceScript : MonoBehaviour {
-	
+
 	//canvases/menus
 	public Canvas mainInterface;
 	public Canvas quitMenu; 
@@ -93,6 +93,7 @@ public class InterfaceScript : MonoBehaviour {
 		closeHelp.enabled = false;
 
 	}
+
 	// Update is called once per frame
 	void Update()
 	{
@@ -166,12 +167,13 @@ public class InterfaceScript : MonoBehaviour {
 		volumeSlider.enabled = true;
 		settings.enabled = true;
 		mapView.enabled = true;
+
 		//enable all other buttons on interface
 	}
 
 
 	//TESTING HOVER OVER
-	void OnMouseOver()
+	/*void OnMouseOver()
 	{
 		displayInfo = true;	
 	}
@@ -192,7 +194,7 @@ public class InterfaceScript : MonoBehaviour {
 		{
 			theText.color = Color.Lerp (theText.color, Color.clear, fadeTime * Time.deltaTime);
 		}
-	}
+	}*/
 	//END TESTING HOVER OVER- currently not working*
 
 	public void ExitGame() //ending session- jumps to exit screen
