@@ -7,6 +7,8 @@ using UnityEngine.SceneManagement;
 //the script for all of the interface/display elements in the main scene (actual simulation environment)
 public class InterfaceScript : MonoBehaviour {
 
+	public Button parkBtn;
+
 	//canvases/menus
 	public Canvas mainInterface;
 	public Canvas quitMenu; 
@@ -41,7 +43,11 @@ public class InterfaceScript : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		
+
+		parkBtn = parkBtn.GetComponent<Button> ();//GameObject.FindObjectOfType<Button>();
+		parkBtn.enabled = false; //button is not interactable (for now)
+		parkBtn.gameObject.SetActive(false); //makes button disappear
+
 		//canvases/menus
 		mainInterface = mainInterface.GetComponent<Canvas>();
 		quitMenu = quitMenu.GetComponent<Canvas> ();
@@ -161,7 +167,6 @@ public class InterfaceScript : MonoBehaviour {
 		mainInterface.enabled = true;
 		quitMenu.enabled = false;
 		settingsMenu.enabled = false;
-
 		exitBtn.enabled = true;
 		zoomSlider.enabled = true;
 		volumeSlider.enabled = true;
