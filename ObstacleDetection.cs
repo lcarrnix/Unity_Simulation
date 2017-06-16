@@ -12,7 +12,7 @@ public class ObstacleDetection : MonoBehaviour {
 	public Rigidbody rb; //for collisions and parking system in place
 
 	public GameObject Player;
-	public GameObject dock;
+	public GameObject trigger;
 	private GameObject theHitObject; //for obstacle detection
 
 	public GameObject[] deskObstacles; //for clearing obstacle warnings- desks
@@ -45,7 +45,7 @@ public class ObstacleDetection : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{
-		dock = GameObject.Find ("Trigger");
+		trigger = GameObject.Find ("Trigger");
 		//I tried setting up the slider like in InterfaceScript.cs, but it kept giving me the error messge about null...
 		speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
 
@@ -205,8 +205,8 @@ public class ObstacleDetection : MonoBehaviour {
 		}
 		//can still move forward if object in front is dock
 		else if(Input.GetKey (KeyCode.UpArrow) && (Physics.Raycast (transform.position, forward, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance))){
-			if(hit.collider.gameObject == dock){
-				//Debug.Log ("DOCK is HIT OBJECT");
+			if(hit.collider.gameObject == trigger){
+				//Debug.Log ("trigger is HIT OBJECT");
 				transform.Translate (Vector3.forward * speed * Time.deltaTime);
 			}
 		}
@@ -220,7 +220,7 @@ public class ObstacleDetection : MonoBehaviour {
 		}
 		//can still move backward if object in back is dock
 		else if(Input.GetKey (KeyCode.DownArrow) && (Physics.Raycast (transform.position, back, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance)) ){
-			if (hit.collider.gameObject == dock) {
+			if (hit.collider.gameObject == trigger) {
 				transform.Translate (-Vector3.forward * speed * Time.deltaTime);
 			}
 		}
