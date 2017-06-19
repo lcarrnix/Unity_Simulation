@@ -5,20 +5,17 @@ using UnityEngine.UI;
 
 public class Docking : MonoBehaviour {
 
-	//public GameObject dockCube;
-	//public Slider speedSlider;
-
-	//FIXME: This method does not work. Dunno why. Probs don't need it in the future anyway.
-	/*void onTriggerEnter(Collider other){
-		Debug.Log ("ENTERED the trigger...");
-	}*/
+	public GameObject player;
+	public GameObject dockCube;
+	public Slider speedSlider;
 
 	// This will only be displayed when the player is in trigger (near the dock)
 	public Button parkBtn;
 
 	void Start(){
-		//dockCube = GameObject.Find ("Dock Cube");
-		//speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
+		player = GameObject.Find ("Player");
+		dockCube = GameObject.Find ("Dock Cube");
+		speedSlider = speedSlider.GetComponent<Slider> ();
 
 		// Autonomous driving stuff
 		parkBtn = parkBtn.GetComponent<Button> ();
@@ -28,22 +25,25 @@ public class Docking : MonoBehaviour {
 
 	// Displays parkBtn
 	void OnTriggerStay(Collider other){
-		Debug.Log ("WITHIN trigger...");
+		//Debug.Log ("WITHIN trigger...");
 		parkBtn.enabled = true; // Button is interactable (for now)
 		parkBtn.gameObject.SetActive(true); // Makes button appear
 	}
 
 	// Hides parkBtn
 	void OnTriggerExit(Collider other){
-		Debug.Log ("EXITED the trigger...");
-		parkBtn.enabled = false; // Button is not interactable (for now)
-		parkBtn.gameObject.SetActive(false); // Makes button disappear
+		//Debug.Log ("EXITED the trigger...");
+		parkBtn.enabled = false;
+		parkBtn.gameObject.SetActive(false);
 	}
 
 	public void onBtnClick(){
 		//set up auto-docking code here
 		Debug.Log ("PARKING BTN CLICKED");
-		//Debug.Log ("Speed: " + speedSlider.value);
-		//transform.Translate (dockCube.transform.position * speed * Time.deltaTime);
+		//Debug.Log ("Dock positon: " + dockCube.transform.position);
+		//Debug.Log ("Player positon: " + player.transform.position);
+
+		//brute force works:
+		player.transform.position = dockCube.transform.position;
 	}
 }
