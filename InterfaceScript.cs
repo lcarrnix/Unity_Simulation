@@ -14,6 +14,9 @@ public class InterfaceScript : MonoBehaviour {
 	public Canvas quitMenu; 
 	public Canvas settingsMenu;
 	public Canvas helpMenu;
+	public Canvas warningMenu; // FIXME: it looks like I have to do the same for the toggle. Look into it.
+
+	public Toggle warningToggle;
 
 	//things on main display
 	public Slider zoomSlider;
@@ -53,6 +56,9 @@ public class InterfaceScript : MonoBehaviour {
 		quitMenu = quitMenu.GetComponent<Canvas> ();
 		settingsMenu = settingsMenu.GetComponent<Canvas> ();
 		helpMenu = helpMenu.GetComponent<Canvas> ();
+		warningMenu = warningMenu.GetComponent<Canvas> ();
+
+		warningToggle = warningToggle.GetComponent<Toggle> ();
 
 		//main display components
 		exitBtn = exitBtn.GetComponent<Button> ();
@@ -84,6 +90,9 @@ public class InterfaceScript : MonoBehaviour {
 		quitMenu.enabled = false; 
 		settingsMenu.enabled = false;
 		helpMenu.enabled = false;
+		warningMenu.enabled = false;
+
+		warningToggle.enabled = false;
 
 		exitBtn.enabled = true;
 		zoomSlider.enabled = true;
@@ -112,6 +121,9 @@ public class InterfaceScript : MonoBehaviour {
 		mainInterface.enabled = false; //hiding other canvas
 		settingsMenu.enabled = true;
 		helpMenu.enabled = false;
+		warningMenu.enabled = false;
+
+		warningToggle.enabled = false;
 
 		//setting menu components
 		//scroll.enabled = true;
@@ -137,6 +149,8 @@ public class InterfaceScript : MonoBehaviour {
 
 		//help menu component
 		closeHelp.enabled = true;
+
+		warningToggle.enabled = false;
 
 		//disabling buttons on settings menu
 		//scroll.enabled = false;
@@ -176,6 +190,12 @@ public class InterfaceScript : MonoBehaviour {
 		//enable all other buttons on interface
 	}
 
+	// FIXME: try to figure out a way to override the pop-up
+	// (e.g. near obstacle, pop-up, click close, stay closed unless nears another obstacle)
+	public void onCloseWarning(){
+		warningMenu.enabled = false;
+		warningToggle.enabled = false;
+	}
 
 	//TESTING HOVER OVER
 	/*void OnMouseOver()
