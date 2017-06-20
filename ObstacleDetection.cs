@@ -8,6 +8,7 @@ public class ObstacleDetection : MonoBehaviour {
 
 	public Canvas warningMenu;
 	public Toggle warningToggle;
+	private bool warningDisplayed;
 
 	PlayerController PlayerControlInstance; //instance of PlayerController class
 	ControlMethods ControlMethInstance; //instance of ControlMethods class
@@ -52,6 +53,7 @@ public class ObstacleDetection : MonoBehaviour {
 		warningMenu.enabled = false;
 		warningToggle = warningToggle.GetComponent<Toggle> ();
 		warningToggle.enabled = false;
+		warningDisplayed = false;
 
 		trigger = GameObject.Find ("Trigger");
 		speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
@@ -99,6 +101,15 @@ public class ObstacleDetection : MonoBehaviour {
 		checkObstacleWarning (); //checks if obstacle were avoided every frame before any physics takes place
 	}
 
+	// Pop up warning is displayed only if toggle is on AND it hasn't already been displayed for said obstacle
+	void displayWarning(){
+		if (warningToggle.isOn && warningDisplayed == false) {
+			warningMenu.enabled = true;
+			warningToggle.enabled = true;
+			warningDisplayed = true;
+		}
+	}
+
 	//main function for detecting obstacles
 	//will call functions to display colors corresponding to obstacles and decrease speed for obstacle avoidance
 	void obstacleDetection(ref float speed) {
@@ -117,10 +128,7 @@ public class ObstacleDetection : MonoBehaviour {
 					//there is an obstacle near user, so slowing down user's speed
 					speed = decreasedSpeed;
 					redObstacleWarning (theHitObject); //changes color to red
-					if (warningToggle.isOn) {
-						warningMenu.enabled = true;
-						warningToggle.enabled = true;
-					}
+					displayWarning();
 				}
 			}
 			if(Physics.Raycast (transform.position, back, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, left, out hit, detectionDistance * 1.7f) || Physics.Raycast (transform.position, right, out hit, detectionDistance * 1.7f)
@@ -130,10 +138,7 @@ public class ObstacleDetection : MonoBehaviour {
 				if (theHitObject.CompareTag("furniture") || theHitObject.CompareTag("wall")){
 					speed = decreasedSpeed;
 					yellowObstacleWarning (theHitObject); //changes color to yellow
-					if (warningToggle.isOn) {
-						warningMenu.enabled = true;
-						warningToggle.enabled = true;
-					}
+					displayWarning();
 				}
 			}
 
@@ -170,6 +175,8 @@ public class ObstacleDetection : MonoBehaviour {
 		{
 			//restoring speed to normal 
 			speed = speedSlider.value;
+
+			warningDisplayed = false;
 
 			//Testing purposes: deskObstacles = GameObject.FindGameObjectsWithTag ("desk");
 			deskObstacles = GameObject.FindGameObjectsWithTag ("furniture");
