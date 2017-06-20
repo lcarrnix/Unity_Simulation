@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class InterfaceScript : MonoBehaviour {
 
 	public Button parkBtn;
+	public GameObject player;
 
 	//canvases/menus
 	public Canvas mainInterface;
@@ -21,6 +22,7 @@ public class InterfaceScript : MonoBehaviour {
 	//things on main display
 	public Slider zoomSlider;
 	public Slider volumeSlider;
+	public Slider heightSlider;
 	public Button exitBtn;
 	public Button settings;
 	public Toggle mapView;
@@ -47,6 +49,8 @@ public class InterfaceScript : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 
+		player = GameObject.Find ("Player");
+
 		parkBtn = parkBtn.GetComponent<Button> ();//GameObject.FindObjectOfType<Button>();
 		parkBtn.enabled = false; //button is not interactable (for now)
 		parkBtn.gameObject.SetActive(false); //makes button disappear
@@ -64,6 +68,7 @@ public class InterfaceScript : MonoBehaviour {
 		exitBtn = exitBtn.GetComponent<Button> ();
 		zoomSlider = zoomSlider.GetComponent<Slider> ();
 		volumeSlider = volumeSlider.GetComponent<Slider> ();
+		heightSlider = heightSlider.GetComponent<Slider> ();
 		settings = settings.GetComponent<Button> ();
 		mapView = mapView.GetComponent<Toggle> ();
 
@@ -106,7 +111,6 @@ public class InterfaceScript : MonoBehaviour {
 		helpBtn.enabled = false;
 		closeSettings.enabled = false;
 		closeHelp.enabled = false;
-
 	}
 
 	// Update is called once per frame
@@ -190,11 +194,14 @@ public class InterfaceScript : MonoBehaviour {
 		//enable all other buttons on interface
 	}
 
-	// FIXME: try to figure out a way to override the pop-up
-	// (e.g. near obstacle, pop-up, click close, stay closed unless nears another obstacle)
 	public void onCloseWarning(){
 		warningMenu.enabled = false;
 		warningToggle.enabled = false;
+	}
+
+	//FIXME: small bug here. Height is only changed briefly until player moves.
+	public void changeHeightSlider(float value){
+		player.transform.position = new Vector3 (player.transform.position.x, value, player.transform.position.z);
 	}
 
 	//TESTING HOVER OVER
