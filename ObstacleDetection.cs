@@ -6,6 +6,9 @@ using UnityEngine.SceneManagement;
 
 public class ObstacleDetection : MonoBehaviour {
 
+	public Canvas warningMenu;
+	public Toggle warningToggle;
+
 	PlayerController PlayerControlInstance; //instance of PlayerController class
 	ControlMethods ControlMethInstance; //instance of ControlMethods class
 
@@ -45,6 +48,11 @@ public class ObstacleDetection : MonoBehaviour {
 	// Use this for initialization
 	void Start ()
 	{
+		warningMenu = warningMenu.GetComponent<Canvas> ();
+		warningMenu.enabled = false;
+		warningToggle = warningToggle.GetComponent<Toggle> ();
+		warningToggle.enabled = false;
+
 		trigger = GameObject.Find ("Trigger");
 		speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
 
@@ -109,6 +117,10 @@ public class ObstacleDetection : MonoBehaviour {
 					//there is an obstacle near user, so slowing down user's speed
 					speed = decreasedSpeed;
 					redObstacleWarning (theHitObject); //changes color to red
+					if (warningToggle.isOn) {
+						warningMenu.enabled = true;
+						warningToggle.enabled = true;
+					}
 				}
 			}
 			if(Physics.Raycast (transform.position, back, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, left, out hit, detectionDistance * 1.7f) || Physics.Raycast (transform.position, right, out hit, detectionDistance * 1.7f)
@@ -118,6 +130,10 @@ public class ObstacleDetection : MonoBehaviour {
 				if (theHitObject.CompareTag("furniture") || theHitObject.CompareTag("wall")){
 					speed = decreasedSpeed;
 					yellowObstacleWarning (theHitObject); //changes color to yellow
+					if (warningToggle.isOn) {
+						warningMenu.enabled = true;
+						warningToggle.enabled = true;
+					}
 				}
 			}
 
@@ -139,7 +155,7 @@ public class ObstacleDetection : MonoBehaviour {
 		//visual warnings take place here- yellow to left and right obstacles (less severe)
 		//converting doubles to floats for color
 		float gValue = (float) 0.92;
-		float bValue = (float)0.016;
+		float bValue = (float) 0.016;
 		objectWarning.GetComponent<Renderer> ().material.color = new Color (1, gValue, bValue, 1); //yellow- from docs.unity3d.com
 		return objectWarning;
 	}
