@@ -46,7 +46,6 @@ public class ObstacleDetection : MonoBehaviour {
 	void Start () 
 	{
 		trigger = GameObject.Find ("Trigger");
-		//I tried setting up the slider like in InterfaceScript.cs, but it kept giving me the error messge about null...
 		speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
 
 		PlayerControlInstance = GetComponent<PlayerController> ();
