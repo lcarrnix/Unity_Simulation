@@ -43,7 +43,7 @@ public class ObstacleDetection : MonoBehaviour {
 	}
 
 	// Use this for initialization
-	void Start () 
+	void Start ()
 	{
 		trigger = GameObject.Find ("Trigger");
 		speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
@@ -232,5 +232,4 @@ public class ObstacleDetection : MonoBehaviour {
 		//Debug.Log ("Current speed: " + speed);
 		checkObstacleWarning (); //idk about this
 	}
-} 
-
+}
