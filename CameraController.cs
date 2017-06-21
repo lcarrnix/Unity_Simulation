@@ -10,11 +10,10 @@ public class CameraController : MonoBehaviour {
 	private float horizontalSpeed = 2.0f;
 	private float turnSpeed = 50f;
 
-
-
 	// Use this for initialization
 	void Start () 
 	{
+		Player = GameObject.Find ("Player");
 		offset = transform.position - Player.transform.position; //setting offset as distance between camera and ball
 	}
 
@@ -47,7 +46,8 @@ public class CameraController : MonoBehaviour {
 	void LateUpdate () {
 		transform.rotation = Player.transform.rotation;
 
-		transform.position = Player.transform.position + offset; //adds the offset to the player at every frame
-			//so, as player moves, camera moves at end of that frame
+		//adds the offset to the player at every frame
+		//so, as player moves, camera moves at end of that frame
+		transform.position = Player.transform.position + offset;
 	}
 }
