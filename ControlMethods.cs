@@ -43,7 +43,7 @@ public class ControlMethods : MonoBehaviour {
 		//should be able to toggle options on/off during play- currently not working
 		mainCamera.enabled = true;
 		downCamera.enabled = false;
-		downCamera2.enabled = true; 
+		downCamera2.enabled = true;
 		mapCamera.enabled = true;
 	}
 
@@ -69,11 +69,6 @@ public class ControlMethods : MonoBehaviour {
 			//Player's position restrictions- just on Y, setting x and z same as before reset
 
 			//none of this is working
-			float temp1 = Player.transform.position.x; 
-			float temp2 = Player.transform.position.z; 
-
-			Vector3 temp = new Vector3 (temp1, .8f, temp2);
-			Player.transform.position = temp;
 
 			mainCamZ = 0;
 			float mainCamX = mainCamera.transform.position.x; 
@@ -83,8 +78,6 @@ public class ControlMethods : MonoBehaviour {
 			mainCamera.transform.position = mainCamPos;
 			float mainCamRotateZ = mainCamera.transform.rotation.z; 
 			mainCamRotateZ = 0; 
-
-
 
 			//Player's rotation restrictions- just on Z, setting x and y same as before reset
 			//this is not working
