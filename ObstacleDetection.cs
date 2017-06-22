@@ -40,7 +40,10 @@ public class ObstacleDetection : MonoBehaviour {
 	private Vector3 diagonal3;
 	private Vector3 diagonal4;
 
+	private Vector3 downForward;
+
 	public Slider speedSlider;
+	public Slider heightSlider;
 
 	public void changeSpeedSlider(float value) {
 		speed = value;
@@ -65,6 +68,7 @@ public class ObstacleDetection : MonoBehaviour {
 
 		decreasedSpeed = 1.0f;
 		speed = speedSlider.value; //current value of the speed slider (default 1)
+		heightSlider = heightSlider.GetComponent<Slider> ();
 
 		//direction vectors from space.world
 		forward = transform.TransformDirection (Vector3.forward);
@@ -76,6 +80,10 @@ public class ObstacleDetection : MonoBehaviour {
 		diagonal2 = transform.TransformDirection(1, 0, -1); //2nd quadrant
 		diagonal3 = transform.TransformDirection (-1, 0, -1); //3rd quadrant
 		diagonal4 = transform.TransformDirection (-1, 0, 1); //4th quadrant
+
+		//FIXME: dunno if this works fam
+		downForward = transform.TransformDirection (0, -heightSlider.value, 1);//(0, -1, 1);
+		Debug.Log ("On OD Start: " + downForward);
 	}
 
 	void FixedUpdate() //before physics
@@ -92,6 +100,8 @@ public class ObstacleDetection : MonoBehaviour {
 		diagonal2 = transform.TransformDirection(1, 0, -1); //2nd quadrant
 		diagonal3 = transform.TransformDirection (-1, 0, -1); //3rd quadrant
 		diagonal4 = transform.TransformDirection (-1, 0, 1); //4th quadrant
+
+		downForward = transform.TransformDirection (0, -heightSlider.value, 1);//(0, -1, 1);
 
 		rb.AddForce (movement * speed); 
 
@@ -219,17 +229,27 @@ public class ObstacleDetection : MonoBehaviour {
 		}
 	}
 
+	//FIXME: doesn't work when height is not original
 	//checks if it's all good to move forward and moves forward if it is
 	void moveForward (){
-		//there is nothing in front
-		if (Input.GetKey (KeyCode.UpArrow) && !Physics.Raycast (transform.position, forward, detectionDistance) && !Physics.Raycast (transform.position, diagonal1, detectionDistance) && !Physics.Raycast (transform.position, diagonal4, detectionDistance)) {
-			transform.Translate (Vector3.forward * speed * Time.deltaTime);
-		}
 		//can still move forward if object in front is dock
-		else if(Input.GetKey (KeyCode.UpArrow) && (Physics.Raycast (transform.position, forward, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance))){
-			if(hit.collider.gameObject == trigger){
-				//Debug.Log ("trigger is HIT OBJECT");
+		if (Input.GetKey (KeyCode.UpArrow) && (Physics.Raycast (transform.position, forward, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance))) {
+			if (hit.collider.gameObject == trigger) {
+				Debug.Log ("Trigger is HIT OBJECT");
 				transform.Translate (Vector3.forward * speed * Time.deltaTime);
+			}
+		}
+		//FIXME: Need to check current height to determine if down-forward vector must be used
+		else {
+			//there is nothing in front
+			if (Input.GetKey (KeyCode.UpArrow) && heightSlider.value == 0.8f && !Physics.Raycast (transform.position, forward, detectionDistance) && !Physics.Raycast (transform.position, diagonal1, detectionDistance) && !Physics.Raycast (transform.position, diagonal4, detectionDistance)) {
+				transform.Translate (Vector3.forward * speed * Time.deltaTime);
+				Debug.Log ("Height is == 0.8f");
+			}
+			else if(Input.GetKey (KeyCode.UpArrow) && !Physics.Raycast (transform.position, downForward, detectionDistance) && !Physics.Raycast (transform.position, forward, detectionDistance) && !Physics.Raycast (transform.position, diagonal1, detectionDistance) && !Physics.Raycast (transform.position, diagonal4, detectionDistance)) {
+				//need to use down-forward vector... dunno how fam.
+				transform.Translate (Vector3.forward * speed * Time.deltaTime);
+				Debug.Log ("Height is: " + downForward);
 			}
 		}
 	}

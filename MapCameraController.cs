@@ -13,11 +13,13 @@ public class MapCameraController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		offset = transform.position - Player.transform.position; 
+
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		//do nothing- no rotation/movement necessary for map view
+
 	}
 
 }
