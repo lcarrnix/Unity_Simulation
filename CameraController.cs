@@ -10,9 +10,14 @@ public class CameraController : MonoBehaviour {
 	private float horizontalSpeed = 2.0f;
 	private float turnSpeed = 50f;
 
+	public float tiltAngle;
+	public Vector2 tiltAngleRange;
+	public float rotationSpeed = 0.1f;
+	 
+
 	// Use this for initialization
 	void Start () 
-	{
+	{		
 		Player = GameObject.Find ("Player");
 		offset = transform.position - Player.transform.position; //setting offset as distance between camera and ball
 	}
@@ -25,7 +30,7 @@ public class CameraController : MonoBehaviour {
 		//{
 			//camera tilts up towards ceiling
 		//	transform.Rotate (Vector3.left,  turnSpeed * Time.deltaTime); 
-			//transform.Rotate (Vector3.up, -turnSpeed * Time.deltaTime);
+		//	transform.Rotate (Vector3.up, -turnSpeed * Time.deltaTime);
 		//}
 
 		//if (Input.GetKey (KeyCode.S)) {
@@ -44,10 +49,13 @@ public class CameraController : MonoBehaviour {
 		
 	// runs at end of every frame- guarunteed to run after anything in frame has happened
 	void LateUpdate () {
-		transform.rotation = Player.transform.rotation;
 
+		transform.rotation = Player.transform.rotation;
 		//adds the offset to the player at every frame
 		//so, as player moves, camera moves at end of that frame
 		transform.position = Player.transform.position + offset;
 	}
+
+
+		
 }

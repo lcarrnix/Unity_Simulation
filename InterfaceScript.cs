@@ -18,6 +18,7 @@ public class InterfaceScript : MonoBehaviour {
 	public Canvas warningMenu; // FIXME: it looks like I have to do the same for the toggle. Look into it.
 
 	public Toggle warningToggle;
+	public Toggle mapToggle;
 
 	//things on main display
 	public Slider zoomSlider;
@@ -45,6 +46,7 @@ public class InterfaceScript : MonoBehaviour {
 	public bool displayInfo;
 	public Canvas Information;
 	//end testing for hover over displays- not currently working
+	public Camera mapCam;
 
 	// Use this for initialization
 	void Start () {
@@ -63,6 +65,7 @@ public class InterfaceScript : MonoBehaviour {
 		warningMenu = warningMenu.GetComponent<Canvas> ();
 
 		warningToggle = warningToggle.GetComponent<Toggle> ();
+		mapToggle = mapToggle.GetComponent<Toggle> ();
 
 		//main display components
 		exitBtn = exitBtn.GetComponent<Button> ();
@@ -80,7 +83,7 @@ public class InterfaceScript : MonoBehaviour {
 		closeSettings = closeSettings.GetComponent<Button> ();
 
 		//help menu components
-		closeHelp = closeHelp.GetComponent<Button>();
+		closeHelp = closeHelp.GetComponent<Button> ();
 
 		//testing hover over
 		theText = zoomInfo.GetComponent<Text>();
@@ -98,6 +101,7 @@ public class InterfaceScript : MonoBehaviour {
 		warningMenu.enabled = false;
 
 		warningToggle.enabled = false;
+		mapToggle.enabled = true;
 
 		exitBtn.enabled = true;
 		zoomSlider.enabled = true;
@@ -117,6 +121,16 @@ public class InterfaceScript : MonoBehaviour {
 	void Update()
 	{
 		//FadeText (); //for testing hover over displays
+		if (mapToggle.isOn) {
+			//display map camera
+			Debug.Log("Map toggle on");
+			mapCam.camera. == true;
+
+		}
+		else {
+			//do not display map camera
+			Debug.Log("Map toggle off");
+		}
 	}
 
 	public void SettingsMenuDisplay()
@@ -128,6 +142,7 @@ public class InterfaceScript : MonoBehaviour {
 		warningMenu.enabled = false;
 
 		warningToggle.enabled = false;
+		mapToggle.enabled = false;
 
 		//setting menu components
 		//scroll.enabled = true;
@@ -155,6 +170,7 @@ public class InterfaceScript : MonoBehaviour {
 		closeHelp.enabled = true;
 
 		warningToggle.enabled = false;
+		mapToggle.enabled = false;
 
 		//disabling buttons on settings menu
 		//scroll.enabled = false;
