@@ -15,7 +15,7 @@ public class InterfaceScript : MonoBehaviour {
 	public Canvas quitMenu; 
 	public Canvas settingsMenu;
 	public Canvas helpMenu;
-	public Canvas warningMenu; // FIXME: it looks like I have to do the same for the toggle. Look into it.
+	public Canvas warningMenu;
 
 	public Toggle warningToggle;
 	public Toggle mapToggle;
@@ -23,10 +23,8 @@ public class InterfaceScript : MonoBehaviour {
 	//things on main display
 	public Slider zoomSlider;
 	public Slider volumeSlider;
-	public Slider heightSlider;
 	public Button exitBtn;
 	public Button settings;
-	public Toggle mapView;
 
 	//things on settings menu
 	//public Scrollbar scroll; //not sure if this is right?
@@ -46,12 +44,17 @@ public class InterfaceScript : MonoBehaviour {
 	public bool displayInfo;
 	public Canvas Information;
 	//end testing for hover over displays- not currently working
+
 	public Camera mapCam;
+	public Canvas mapToggleCanvas;
 
 	// Use this for initialization
 	void Start () {
 
 		player = GameObject.Find ("Player");
+		mapCam = mapCam.GetComponent<Camera> ();
+		mapToggleCanvas = mapToggleCanvas.GetComponent<Canvas> ();
+		mapToggleCanvas.enabled = false;
 
 		parkBtn = parkBtn.GetComponent<Button> ();//GameObject.FindObjectOfType<Button>();
 		parkBtn.enabled = false; //button is not interactable (for now)
@@ -71,9 +74,7 @@ public class InterfaceScript : MonoBehaviour {
 		exitBtn = exitBtn.GetComponent<Button> ();
 		zoomSlider = zoomSlider.GetComponent<Slider> ();
 		volumeSlider = volumeSlider.GetComponent<Slider> ();
-		heightSlider = heightSlider.GetComponent<Slider> ();
 		settings = settings.GetComponent<Button> ();
-		mapView = mapView.GetComponent<Toggle> ();
 
 		//settings menu components
 		//scroll = scroll.GetComponent<Scrollbar>(); //not sure if this is right
@@ -107,7 +108,6 @@ public class InterfaceScript : MonoBehaviour {
 		zoomSlider.enabled = true;
 		volumeSlider.enabled = true;
 		settings.enabled = true;
-		mapView.enabled = true;
 
 		//scroll.enabled = false;
 		micToggle.enabled = false;
@@ -121,15 +121,18 @@ public class InterfaceScript : MonoBehaviour {
 	void Update()
 	{
 		//FadeText (); //for testing hover over displays
-		if (mapToggle.isOn) {
-			//display map camera
-			Debug.Log("Map toggle on");
-			mapCam.camera. == true;
 
+		//display map camera
+		if (mapToggle.isOn) {
+			//Debug.Log("Map toggle on");
+			mapCam.enabled = true;
+			mapToggleCanvas.enabled = false;
 		}
+		//do not display map camera
 		else {
-			//do not display map camera
-			Debug.Log("Map toggle off");
+			//Debug.Log("Map toggle off");
+			mapCam.enabled = false;
+			mapToggleCanvas.enabled = true;
 		}
 	}
 
@@ -156,7 +159,6 @@ public class InterfaceScript : MonoBehaviour {
 		zoomSlider.enabled = false;
 		volumeSlider.enabled = false;
 		settings.enabled = false;
-		mapView.enabled = false;
 
 		//pressing close on settings menu will send to NoPress()
 	}
@@ -189,7 +191,7 @@ public class InterfaceScript : MonoBehaviour {
 		zoomSlider.enabled = false;
 		volumeSlider.enabled = false;
 		settings.enabled = false;
-		mapView.enabled = false;
+		mapToggle.enabled = false;
 
 		//need to disable other buttons on interface
 		//pressing yes will send to ExitGame()
@@ -205,7 +207,7 @@ public class InterfaceScript : MonoBehaviour {
 		zoomSlider.enabled = true;
 		volumeSlider.enabled = true;
 		settings.enabled = true;
-		mapView.enabled = true;
+		mapToggle.enabled = true;
 
 		//enable all other buttons on interface
 	}
