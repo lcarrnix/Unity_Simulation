@@ -46,15 +46,14 @@ public class InterfaceScript : MonoBehaviour {
 	//end testing for hover over displays- not currently working
 
 	public Camera mapCam;
-	public Canvas mapToggleCanvas;
+	public Text mapToggleDisabled;
 
 	// Use this for initialization
 	void Start () {
 
 		player = GameObject.Find ("Player");
 		mapCam = mapCam.GetComponent<Camera> ();
-		mapToggleCanvas = mapToggleCanvas.GetComponent<Canvas> ();
-		mapToggleCanvas.enabled = false;
+		mapToggleDisabled = mapToggleDisabled.GetComponent<Text> ();
 
 		parkBtn = parkBtn.GetComponent<Button> ();//GameObject.FindObjectOfType<Button>();
 		parkBtn.enabled = false; //button is not interactable (for now)
@@ -126,13 +125,13 @@ public class InterfaceScript : MonoBehaviour {
 		if (mapToggle.isOn) {
 			//Debug.Log("Map toggle on");
 			mapCam.enabled = true;
-			mapToggleCanvas.enabled = false;
+			mapToggleDisabled.enabled = false;
 		}
 		//do not display map camera
 		else {
 			//Debug.Log("Map toggle off");
 			mapCam.enabled = false;
-			mapToggleCanvas.enabled = true;
+			mapToggleDisabled.enabled = true;
 		}
 	}
 
