@@ -25,9 +25,6 @@ public class TiltFeature : MonoBehaviour {
 	private float moveVertical;
 	public Vector3 movement;
 
-	//private Vector3 initialPosition; //for tilt that is working
-	//private Quaternion initialRotation; //for tilt that is working
-
 	// Use this for initialization
 	void Start () 
 	{
@@ -38,10 +35,6 @@ public class TiltFeature : MonoBehaviour {
 		offset = transform.position - Player.transform.position; //setting offset as distance between camera and ball
 
 		mainCamera.enabled = true;
-
-
-		//initialPosition = transform.position; //tilt that is working
-		//initialRotation = transform.rotation; //tilt that is working
 	}
 
 	void FixedUpdate()
@@ -55,18 +48,7 @@ public class TiltFeature : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		/**
-		if (Input.GetKey (KeyCode.W)) {  //calls tilt method to tilt up, max of 30 degrees
-			tilt (true);
-		} else if (Input.GetKey (KeyCode.S)) {  //calls tilt method to tilt down, max of -30 degrees
-			tilt (false);
-		} else if (Input.GetKey (KeyCode.A)) { //calls pan method to pan to the right, max of 90 degrees
-			pan (true);
-		} else if (Input.GetKey (KeyCode.D)) { //calls pan method to pan to the left, max of -90 dregees
-			pan (false);
-		} 
 
-		*/
 		//TILT FEATURE FOR MAIN CAMERA VIEW
 
 		//THESE DON'T WORK IN HERE
@@ -102,34 +84,5 @@ public class TiltFeature : MonoBehaviour {
 		//so, as player moves, camera moves at end of that frame
 	}
 
-	/**
-	void tilt (bool tiltUp){
-		float angle = transform.eulerAngles.x;
 
-		if (tiltUp){
-			angle += rotationSpeed;
-			angle = Mathf.Clamp(angle, -30f, 30f);  //sets max and min degrees of rotation. not working right now
-		} else {
-			angle -= rotationSpeed;
-			angle = Mathf.Clamp(angle, -30f, 30f);  //sets max and min degrees of rotation. not working right now
-		}
-		//transform.eulerAngles = new Vector3 (transform.eulerAngles.y, angle, transform.eulerAngles.z);
-	}
-
-	void pan (bool panRight){
-		float angle = transform.eulerAngles.y;
-		if(panRight){
-			//if(rb.IsSleeping() == true){ //supposed to check if the player is moving but doesn't work. 
-			angle += rotationSpeed;
-			angle = Mathf.Clamp(angle, -90f, 90f); //sets max and min dregees of rotation. not working right now
-			//}
-		} else{
-			//if(rb.IsSleeping() == true){
-			angle -= rotationSpeed;
-			angle = Mathf.Clamp(angle, -90f, 90f); //sets max and min dregees of rotation. not working right now
-			//}
-		}
-
-	}
-	*/
 }

@@ -136,7 +136,7 @@ public class ControlMethods : MonoBehaviour {
 		{
 			//this is not working
 
-			//mapCamera.enabled = false;
+			//mapCamera.enabled == false;
 			//mapCamera.SetActive(true);
 			//mapCamera.isActiveAndEnabled = false; 
 		}
@@ -174,8 +174,7 @@ public class ControlMethods : MonoBehaviour {
 			//for testing purposes- want 45 degrees to left
 			//camera tilts left/counterclockwise
 			Debug.Log(moveHorizontal);
-			if (moveHorizontal > -0.34f) 
-			{
+			if (moveHorizontal > -0.34f){
 				transform.Rotate (0, -1, 0);
 			}
 				
@@ -183,11 +182,11 @@ public class ControlMethods : MonoBehaviour {
 
 		if (Input.GetKey (KeyCode.D)) 
 		{
-			//restricts degree of tile possible
+			//restricts degree of tilt possible
 			//for testing purposes- want 45 degrees to right
 			//camera tilts right/clockwise
 			Debug.Log(moveHorizontal);
-			if (moveHorizontal < 0.34f) {
+			if (moveHorizontal < 0.34f){
 				transform.Rotate (0, 1, 0);
 			}
 		}
