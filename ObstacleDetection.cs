@@ -40,6 +40,14 @@ public class ObstacleDetection : MonoBehaviour {
 	private Vector3 diagonal3;
 	private Vector3 diagonal4;
 
+	//to use when height is not original height
+	private Vector3 downForward;
+	private Vector3 downDiagonal1;
+	private Vector3 downDiagonal4;
+	private Vector3 downBack;
+	private Vector3 downDiagonal2;
+	private Vector3 downDiagonal3;
+
 	public Slider speedSlider;
 	public Slider heightSlider;
 
@@ -78,6 +86,13 @@ public class ObstacleDetection : MonoBehaviour {
 		diagonal2 = transform.TransformDirection(1, 0, -1); //2nd quadrant
 		diagonal3 = transform.TransformDirection (-1, 0, -1); //3rd quadrant
 		diagonal4 = transform.TransformDirection (-1, 0, 1); //4th quadrant
+
+		downForward = transform.TransformDirection (0, -heightSlider.value, 1);
+		downDiagonal1 = transform.TransformDirection (1, -heightSlider.value, 1);
+		downDiagonal4 = transform.TransformDirection (-1, -heightSlider.value, 1);
+		downBack = transform.TransformDirection (0, -heightSlider.value, -1);
+		downDiagonal2 = transform.TransformDirection (1, -heightSlider.value, -1);
+		downDiagonal3 = transform.TransformDirection (-1, -heightSlider.value, -1);
 	}
 
 	void FixedUpdate() //before physics
@@ -94,6 +109,13 @@ public class ObstacleDetection : MonoBehaviour {
 		diagonal2 = transform.TransformDirection(1, 0, -1); //2nd quadrant
 		diagonal3 = transform.TransformDirection (-1, 0, -1); //3rd quadrant
 		diagonal4 = transform.TransformDirection (-1, 0, 1); //4th quadrant
+
+		downForward = transform.TransformDirection (0, -heightSlider.value, 1);
+		downDiagonal1 = transform.TransformDirection (1, -heightSlider.value, 1);
+		downDiagonal4 = transform.TransformDirection (-1, -heightSlider.value, 1);
+		downBack = transform.TransformDirection (0, -heightSlider.value, -1);
+		downDiagonal2 = transform.TransformDirection (1, -heightSlider.value, -1);
+		downDiagonal3 = transform.TransformDirection (-1, -heightSlider.value, -1);
 
 		rb.AddForce (movement * speed); 
 
@@ -224,11 +246,11 @@ public class ObstacleDetection : MonoBehaviour {
 	//checks if it's all good to move forward and moves forward if it is
 	void moveForward (){
 		//there is nothing in front
-		if (Input.GetKey (KeyCode.UpArrow) && !Physics.Raycast (transform.position, forward, detectionDistance) && !Physics.Raycast (transform.position, diagonal1, detectionDistance) && !Physics.Raycast (transform.position, diagonal4, detectionDistance)) {
+		if (Input.GetKey (KeyCode.UpArrow) && !Physics.Raycast (transform.position, downForward, heightSlider.value) && !Physics.Raycast (transform.position, downDiagonal1, heightSlider.value) && !Physics.Raycast (transform.position, downDiagonal4, heightSlider.value) && !Physics.Raycast (transform.position, forward, detectionDistance) && !Physics.Raycast (transform.position, diagonal1, detectionDistance) && !Physics.Raycast (transform.position, diagonal4, detectionDistance)) {
 			transform.Translate (Vector3.forward * speed * Time.deltaTime);
 		}
 		//can still move forward if object in front is dock
-		else if(Input.GetKey (KeyCode.UpArrow) && (Physics.Raycast (transform.position, forward, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance))){
+		else if(Input.GetKey (KeyCode.UpArrow) && (Physics.Raycast (transform.position, downForward, out hit, heightSlider.value) || Physics.Raycast (transform.position, downDiagonal1, out hit, heightSlider.value) || Physics.Raycast (transform.position, downDiagonal4, out hit, heightSlider.value) || Physics.Raycast (transform.position, forward, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance))){
 			if (hit.collider.gameObject == trigger) {
 				//Debug.Log ("Trigger is HIT OBJECT");
 				transform.Translate (Vector3.forward * speed * Time.deltaTime);
@@ -239,11 +261,11 @@ public class ObstacleDetection : MonoBehaviour {
 	//checks if it's all good to move backward and moves backward if it is
 	void moveBackward(){
 		//there is nothing in back
-		if (Input.GetKey (KeyCode.DownArrow) && !Physics.Raycast (transform.position, back, detectionDistance) && !Physics.Raycast (transform.position, diagonal2, detectionDistance) && !Physics.Raycast (transform.position, diagonal3, detectionDistance)) {
+		if (Input.GetKey (KeyCode.DownArrow) && !Physics.Raycast (transform.position, downBack, heightSlider.value) && !Physics.Raycast (transform.position, downDiagonal2, heightSlider.value) && !Physics.Raycast (transform.position, downDiagonal3, heightSlider.value) && !Physics.Raycast (transform.position, back, detectionDistance) && !Physics.Raycast (transform.position, diagonal2, detectionDistance) && !Physics.Raycast (transform.position, diagonal3, detectionDistance)) {
 			transform.Translate (-Vector3.forward * speed * Time.deltaTime);
 		}
 		//can still move backward if object in back is dock
-		else if(Input.GetKey (KeyCode.DownArrow) && (Physics.Raycast (transform.position, back, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance)) ){
+		else if(Input.GetKey (KeyCode.DownArrow) && (Physics.Raycast (transform.position, downBack, out hit, heightSlider.value) || Physics.Raycast (transform.position, downDiagonal2, out hit, heightSlider.value) || Physics.Raycast (transform.position, downDiagonal3, out hit, heightSlider.value) || Physics.Raycast (transform.position, back, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance)) ){
 			if (hit.collider.gameObject == trigger) {
 				transform.Translate (-Vector3.forward * speed * Time.deltaTime);
 			}
