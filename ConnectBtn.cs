@@ -12,4 +12,9 @@ public class ConnectBtn : MonoBehaviour {
 		//connectClicked = true;
 		SceneManager.LoadScene ("LoadingScene");
 	}
+
+	// When user clicks exit - jumps to end scene
+	public void ExitSimulation(){
+		SceneManager.LoadScene ("EndSession");
+	}
 }
