@@ -30,9 +30,10 @@ public class LoginButton : MonoBehaviour {
 		EnterUsername ();
 	}
 
-	public void StartSim() //when user clicks login- jumps to main scene
+	// When user clicks login - jumps to call scene
+	public void LoadCalls()
 	{
-		SceneManager.LoadScene ("MiniGame");
+		SceneManager.LoadScene ("CallScene");
 	}
 
 	public void Update() //every frame
@@ -122,7 +123,7 @@ public class LoginButton : MonoBehaviour {
 	{
 		if (password.isFocused && username.text != "" && password.text != "" && Input.GetKey (KeyCode.Return)) 
 		{
-			StartSim (); //if both fields are filled in and user presses enter
+			LoadCalls (); //if both fields are filled in and user presses enter
 		}
 	}
 	public void PressLogin()
