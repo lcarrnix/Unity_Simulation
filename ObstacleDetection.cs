@@ -138,14 +138,20 @@ public class ObstacleDetection : MonoBehaviour {
 	//will call functions to display colors corresponding to obstacles and decrease speed for obstacle avoidance
 	void obstacleDetection(ref float speed) {
 		//Debug.Log ("im in obstacleDetection and the speed is " + speed);
-		if ( (Physics.Raycast (transform.position, forward, detectionDistance * 2f)) || (Physics.Raycast (transform.position, back, detectionDistance * 2f)) ||
+		if ( (Physics.Raycast (transform.position, forward, detectionDistance * 2f)) || (Physics.Raycast (transform.position, downForward, heightSlider.value)) ||
+			(Physics.Raycast (transform.position, back, detectionDistance * 2f)) || (Physics.Raycast (transform.position, downBack, heightSlider.value)) ||
 			(Physics.Raycast (transform.position, left, detectionDistance * 1.7f)) || (Physics.Raycast (transform.position, right, detectionDistance * 1.7f)) ||
-			(Physics.Raycast (transform.position, diagonal1, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, diagonal2, detectionDistance * 1.5f)) ||
-			(Physics.Raycast (transform.position, diagonal3, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, diagonal4, detectionDistance * 1.5f)) ) {
+			(Physics.Raycast (transform.position, diagonal1, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, downDiagonal1, heightSlider.value)) ||
+			(Physics.Raycast (transform.position, diagonal2, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, downDiagonal2, heightSlider.value)) ||
+			(Physics.Raycast (transform.position, diagonal3, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, downDiagonal3, heightSlider.value)) ||
+			(Physics.Raycast (transform.position, diagonal4, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, downDiagonal4, heightSlider.value)) ) {
 
 			//checking which direction obstacle is in relative to player
 			//front, front-right diagonal, front-left diagonal
-			if(Physics.Raycast (transform.position, forward, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance * 1.5f)){
+			if(Physics.Raycast (transform.position, forward, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, downForward, out hit, heightSlider.value) ||
+				Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal1, out hit, heightSlider.value) ||
+				Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal4, out hit, heightSlider.value) ){
+
 				theHitObject = hit.collider.gameObject; //sets to obstacle at hand
 				//pathObjects = GameObject.FindGameObjectsWithTag("path");
 				if (theHitObject.CompareTag("furniture") || theHitObject.CompareTag("wall")){
@@ -155,8 +161,12 @@ public class ObstacleDetection : MonoBehaviour {
 					displayWarning();
 				}
 			}
-			if(Physics.Raycast (transform.position, back, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, left, out hit, detectionDistance * 1.7f) || Physics.Raycast (transform.position, right, out hit, detectionDistance * 1.7f)
-				|| Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance * 1.5f)){
+
+			if(Physics.Raycast (transform.position, back, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, downBack, out hit, heightSlider.value) ||
+				Physics.Raycast (transform.position, left, out hit, detectionDistance * 1.7f) || Physics.Raycast (transform.position, right, out hit, detectionDistance * 1.7f) ||
+				Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal2, out hit, heightSlider.value) ||
+				Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal3, out hit, heightSlider.value)){
+
 				theHitObject = hit.collider.gameObject;
 				//pathObjects = GameObject.FindGameObjectsWithTag("path");
 				if (theHitObject.CompareTag("furniture") || theHitObject.CompareTag("wall")){
@@ -189,13 +199,16 @@ public class ObstacleDetection : MonoBehaviour {
 		return objectWarning;
 	}
 
-	void checkObstacleWarning() //overwriting
+	void checkObstacleWarning() //overloading
 	{
 		//checking if all desks are far away from user to not be a warning anymore- checks front, back, left, right, and diagonals
-		if (!Physics.Raycast (transform.position, forward, out hit, detectionDistance * 2f) && !Physics.Raycast(transform.position, back, out hit, detectionDistance * 2f) 
+		if (!Physics.Raycast (transform.position, forward, out hit, detectionDistance * 2f) && !Physics.Raycast (transform.position, downForward, out hit, heightSlider.value)
+			&& !Physics.Raycast(transform.position, back, out hit, detectionDistance * 2f) && !Physics.Raycast(transform.position, downBack, out hit, heightSlider.value)
 			&& !Physics.Raycast(transform.position, left, out hit, detectionDistance * 1.7f) && !Physics.Raycast(transform.position, right, out hit, detectionDistance * 1.7f)
-			&& !Physics.Raycast(transform.position, diagonal1, out hit, detectionDistance * 1.5f) && !Physics.Raycast(transform.position, diagonal2, out hit, detectionDistance * 1.5f)
-			&& !Physics.Raycast(transform.position, diagonal3, out hit, detectionDistance * 1.5f) && !Physics.Raycast(transform.position, diagonal4, out hit, detectionDistance * 1.5f)) 
+			&& !Physics.Raycast(transform.position, diagonal1, out hit, detectionDistance * 1.5f) && !Physics.Raycast(transform.position, downDiagonal1, out hit, heightSlider.value)
+			&& !Physics.Raycast(transform.position, diagonal2, out hit, detectionDistance * 1.5f) && !Physics.Raycast(transform.position, downDiagonal2, out hit, heightSlider.value)
+			&& !Physics.Raycast(transform.position, diagonal3, out hit, detectionDistance * 1.5f) && !Physics.Raycast(transform.position, downDiagonal3, out hit, heightSlider.value)
+			&& !Physics.Raycast(transform.position, diagonal4, out hit, detectionDistance * 1.5f) && !Physics.Raycast(transform.position, downDiagonal4, out hit, heightSlider.value)) 
 		{
 			//restoring speed to normal 
 			speed = speedSlider.value;
@@ -229,7 +242,7 @@ public class ObstacleDetection : MonoBehaviour {
 	GameObject clearObstacleWarning(GameObject objectWarning)
 	{
 		//object is far enough away from player after a warning
-		objectWarning.GetComponent<Renderer>().material.color = new Color(1,1,1,1); //white
+		objectWarning.GetComponent<Renderer>().material.color = new Color(1, 1, 1, 1); //white
 		speed = speedSlider.value; //restoring max speed
 		return objectWarning;
 	}
@@ -246,11 +259,20 @@ public class ObstacleDetection : MonoBehaviour {
 	//checks if it's all good to move forward and moves forward if it is
 	void moveForward (){
 		//there is nothing in front
-		if (Input.GetKey (KeyCode.UpArrow) && !Physics.Raycast (transform.position, downForward, heightSlider.value) && !Physics.Raycast (transform.position, downDiagonal1, heightSlider.value) && !Physics.Raycast (transform.position, downDiagonal4, heightSlider.value) && !Physics.Raycast (transform.position, forward, detectionDistance) && !Physics.Raycast (transform.position, diagonal1, detectionDistance) && !Physics.Raycast (transform.position, diagonal4, detectionDistance)) {
+		if (Input.GetKey (KeyCode.UpArrow) && !Physics.Raycast (transform.position, downForward, heightSlider.value) &&
+			!Physics.Raycast (transform.position, downDiagonal1, heightSlider.value) && !Physics.Raycast (transform.position, downDiagonal4, heightSlider.value) &&
+			!Physics.Raycast (transform.position, forward, detectionDistance) && !Physics.Raycast (transform.position, diagonal1, detectionDistance) &&
+			!Physics.Raycast (transform.position, diagonal4, detectionDistance)) {
+
 			transform.Translate (Vector3.forward * speed * Time.deltaTime);
 		}
+
 		//can still move forward if object in front is dock
-		else if(Input.GetKey (KeyCode.UpArrow) && (Physics.Raycast (transform.position, downForward, out hit, heightSlider.value) || Physics.Raycast (transform.position, downDiagonal1, out hit, heightSlider.value) || Physics.Raycast (transform.position, downDiagonal4, out hit, heightSlider.value) || Physics.Raycast (transform.position, forward, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance))){
+		else if(Input.GetKey (KeyCode.UpArrow) && (Physics.Raycast (transform.position, downForward, out hit, heightSlider.value) ||
+			Physics.Raycast (transform.position, downDiagonal1, out hit, heightSlider.value) ||
+			Physics.Raycast (transform.position, downDiagonal4, out hit, heightSlider.value) || Physics.Raycast (transform.position, forward, out hit, detectionDistance) ||
+			Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance))){
+
 			if (hit.collider.gameObject == trigger) {
 				//Debug.Log ("Trigger is HIT OBJECT");
 				transform.Translate (Vector3.forward * speed * Time.deltaTime);
@@ -261,11 +283,20 @@ public class ObstacleDetection : MonoBehaviour {
 	//checks if it's all good to move backward and moves backward if it is
 	void moveBackward(){
 		//there is nothing in back
-		if (Input.GetKey (KeyCode.DownArrow) && !Physics.Raycast (transform.position, downBack, heightSlider.value) && !Physics.Raycast (transform.position, downDiagonal2, heightSlider.value) && !Physics.Raycast (transform.position, downDiagonal3, heightSlider.value) && !Physics.Raycast (transform.position, back, detectionDistance) && !Physics.Raycast (transform.position, diagonal2, detectionDistance) && !Physics.Raycast (transform.position, diagonal3, detectionDistance)) {
+		if (Input.GetKey (KeyCode.DownArrow) && !Physics.Raycast (transform.position, downBack, heightSlider.value) &&
+			!Physics.Raycast (transform.position, downDiagonal2, heightSlider.value) && !Physics.Raycast (transform.position, downDiagonal3, heightSlider.value) &&
+			!Physics.Raycast (transform.position, back, detectionDistance) && !Physics.Raycast (transform.position, diagonal2, detectionDistance) &&
+			!Physics.Raycast (transform.position, diagonal3, detectionDistance)) {
+
 			transform.Translate (-Vector3.forward * speed * Time.deltaTime);
 		}
+
 		//can still move backward if object in back is dock
-		else if(Input.GetKey (KeyCode.DownArrow) && (Physics.Raycast (transform.position, downBack, out hit, heightSlider.value) || Physics.Raycast (transform.position, downDiagonal2, out hit, heightSlider.value) || Physics.Raycast (transform.position, downDiagonal3, out hit, heightSlider.value) || Physics.Raycast (transform.position, back, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance)) ){
+		else if(Input.GetKey (KeyCode.DownArrow) && (Physics.Raycast (transform.position, downBack, out hit, heightSlider.value) ||
+			Physics.Raycast (transform.position, downDiagonal2, out hit, heightSlider.value) ||
+			Physics.Raycast (transform.position, downDiagonal3, out hit, heightSlider.value) || Physics.Raycast (transform.position, back, out hit, detectionDistance) ||
+			Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance)) ){
+
 			if (hit.collider.gameObject == trigger) {
 				transform.Translate (-Vector3.forward * speed * Time.deltaTime);
 			}
