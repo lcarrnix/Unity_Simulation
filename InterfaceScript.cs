@@ -248,7 +248,7 @@ public class InterfaceScript : MonoBehaviour {
 
 	public void ExitGame() //ending session- jumps to exit screen
 	{
-		SceneManager.LoadScene ("EndSession");
+		SceneManager.LoadScene ("CallScene");
 	}
 
 
