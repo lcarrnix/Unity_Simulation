@@ -16,7 +16,8 @@ public class ObstacleDetection : MonoBehaviour {
 	public Rigidbody rb; //for collisions and parking system in place
 
 	public GameObject Player;
-	public GameObject trigger;
+	public GameObject dockTrigger;
+	public GameObject lowWifiTriggger;
 	private GameObject theHitObject; //for obstacle detection
 
 	public GameObject[] deskObstacles; //for clearing obstacle warnings- desks
@@ -64,7 +65,8 @@ public class ObstacleDetection : MonoBehaviour {
 		warningToggle.enabled = false;
 		warningDisplayed = false;
 
-		trigger = GameObject.Find ("Trigger");
+		dockTrigger = GameObject.Find ("Trigger");
+		lowWifiTriggger = GameObject.Find ("LowWifiTrigger");
 		speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
 
 		PlayerControlInstance = GetComponent<PlayerController> ();
@@ -273,7 +275,7 @@ public class ObstacleDetection : MonoBehaviour {
 			Physics.Raycast (transform.position, downDiagonal4, out hit, heightSlider.value) || Physics.Raycast (transform.position, forward, out hit, detectionDistance) ||
 			Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance))){
 
-			if (hit.collider.gameObject == trigger) {
+			if (hit.collider.gameObject == dockTrigger || hit.collider.gameObject == lowWifiTriggger) {
 				//Debug.Log ("Trigger is HIT OBJECT");
 				transform.Translate (Vector3.forward * speed * Time.deltaTime);
 			}
@@ -297,7 +299,7 @@ public class ObstacleDetection : MonoBehaviour {
 			Physics.Raycast (transform.position, downDiagonal3, out hit, heightSlider.value) || Physics.Raycast (transform.position, back, out hit, detectionDistance) ||
 			Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance)) ){
 
-			if (hit.collider.gameObject == trigger) {
+			if (hit.collider.gameObject == dockTrigger || hit.collider.gameObject == lowWifiTriggger) {
 				transform.Translate (-Vector3.forward * speed * Time.deltaTime);
 			}
 		}
