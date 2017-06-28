@@ -11,22 +11,17 @@ public class MidWifiTrigger : MonoBehaviour {
 
 	void Start(){
 		//get images
-		//	LowWifiImage = LowWifiImage.GetComponent<Image> ();
 		MidWifiImage = MidWifiImage.GetComponent<Image> ();
-		//	HighWifiImage = HighWifiImage.GetComponent<Image> ();
-	}
-
-	void OnTriggerEnter (Collider other){
-		Debug.Log("Object entered trigger");
-		//activate Mid Wifi image and deactivate low and high images
-		LowWifiImage.enabled = false;
-		MidWifiImage.enabled = true;
-		HighWifiImage.enabled = false;
+		MidWifiImage.enabled = false;
+		/*LowWifiImage = LowWifiImage.GetComponent<Image> ();
+		HighWifiImage = HighWifiImage.GetComponent<Image> ();*/
 	}
 
 	void OnTriggerStay (Collider other){
-		Debug.Log ("Object in trigger");
-		//nothing
+		//activate Mid Wifi image and deactivate low and high images
+		MidWifiImage.enabled = true;
+		LowWifiImage.enabled = false;
+		HighWifiImage.enabled = false;
 	}
 
 	void OnTriggerExit (Collider other){
