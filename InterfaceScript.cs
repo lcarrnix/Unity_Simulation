@@ -25,9 +25,6 @@ public class InterfaceScript : MonoBehaviour {
 	public Slider volumeSlider;
 	public Button exitBtn;
 	public Button settings;
-	public Image LowWifiImage;
-	public Image MidWifiImage;
-	public Image HighWifiImage;
 
 	//things on settings menu
 	//public Scrollbar scroll; //not sure if this is right?
@@ -77,9 +74,6 @@ public class InterfaceScript : MonoBehaviour {
 		zoomSlider = zoomSlider.GetComponent<Slider> ();
 		volumeSlider = volumeSlider.GetComponent<Slider> ();
 		settings = settings.GetComponent<Button> ();
-		LowWifiImage = LowWifiImage.GetComponent<Image> ();
-		MidWifiImage = MidWifiImage.GetComponent<Image> ();
-		HighWifiImage = HighWifiImage.GetComponent<Image> ();
 
 		//settings menu components
 		//scroll = scroll.GetComponent<Scrollbar>(); //not sure if this is right
@@ -164,9 +158,6 @@ public class InterfaceScript : MonoBehaviour {
 		zoomSlider.enabled = false;
 		volumeSlider.enabled = false;
 		settings.enabled = false;
-		LowWifiImage.enabled = false;
-		MidWifiImage.enabled = false;
-		HighWifiImage.enabled = false;
 
 		//pressing close on settings menu will send to NoPress()
 	}
@@ -200,9 +191,6 @@ public class InterfaceScript : MonoBehaviour {
 		volumeSlider.enabled = false;
 		settings.enabled = false;
 		mapToggle.enabled = false;
-		LowWifiImage.enabled = false;
-		MidWifiImage.enabled = false;
-		HighWifiImage.enabled = false;
 
 		//need to disable other buttons on interface
 		//pressing yes will send to ExitGame()
@@ -219,9 +207,6 @@ public class InterfaceScript : MonoBehaviour {
 		volumeSlider.enabled = true;
 		settings.enabled = true;
 		mapToggle.enabled = true;
-		LowWifiImage.enabled = true;
-		MidWifiImage.enabled = true;
-		HighWifiImage.enabled = true;
 
 		//enable all other buttons on interface
 	}
