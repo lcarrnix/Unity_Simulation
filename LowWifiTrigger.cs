@@ -12,25 +12,18 @@ public class LowWifiTrigger : MonoBehaviour {
 	void Start(){
 		//get images
 		LowWifiImage = LowWifiImage.GetComponent<Image> ();
+		LowWifiImage.enabled = false;
 		MidWifiImage = MidWifiImage.GetComponent<Image> ();
 		HighWifiImage = HighWifiImage.GetComponent<Image> ();
 	}
 
-	void OnTriggerEnter (Collider other){
-		Debug.Log("Object entered trigger");
-		//activate LowWifi image
+	void OnTriggerStay (Collider other){
 		LowWifiImage.enabled = true;
 		MidWifiImage.enabled = false;
 		HighWifiImage.enabled = false;
 	}
 
-	void OnTriggerStay (Collider other){
-		Debug.Log ("Object in trigger");
-		//nothing
-	}
-
 	void OnTriggerExit (Collider other){
-		Debug.Log ("object exited trigger");
 		//deactivate LowWifi image
 		LowWifiImage.enabled = false;
 	}
