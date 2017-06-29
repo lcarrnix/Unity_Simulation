@@ -17,7 +17,9 @@ public class ObstacleDetection : MonoBehaviour {
 
 	public GameObject Player;
 	public GameObject dockTrigger;
-	public GameObject lowWifiTriggger;
+	public GameObject lowWifiTrigger;
+	public GameObject midWifiTrigger; //added 6/28
+	public GameObject highWifiTrigger; //added 6/28
 	private GameObject theHitObject; //for obstacle detection
 
 	public GameObject[] deskObstacles; //for clearing obstacle warnings- desks
@@ -66,7 +68,10 @@ public class ObstacleDetection : MonoBehaviour {
 		warningDisplayed = false;
 
 		dockTrigger = GameObject.Find ("Trigger");
-		lowWifiTriggger = GameObject.Find ("LowWifiTrigger");
+		lowWifiTrigger = GameObject.Find ("LowWifiTrigger");
+		midWifiTrigger = GameObject.Find ("MidWifiTrigger"); //added 6/28
+		highWifiTrigger = GameObject.Find ("HighWifiTrigger"); //added 6/28
+
 		speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
 
 		PlayerControlInstance = GetComponent<PlayerController> ();
@@ -134,6 +139,7 @@ public class ObstacleDetection : MonoBehaviour {
 			warningToggle.enabled = true;
 			warningDisplayed = true;
 		}
+
 	}
 
 	//main function for detecting obstacles
@@ -229,6 +235,12 @@ public class ObstacleDetection : MonoBehaviour {
 			{
 				wallObstacle.GetComponent<Renderer> ().material.color = new Color (1, 1, 1, 1); //white
 			}
+
+			if (warningToggle.isOn) {
+				warningMenu.enabled = false;
+				warningToggle.enabled = false;
+				warningDisplayed = false;
+			}
 		}
 	}
 
@@ -239,6 +251,7 @@ public class ObstacleDetection : MonoBehaviour {
 		{
 			clearObstacleWarning (theHitObject);
 		}
+			
 	}
 
 	GameObject clearObstacleWarning(GameObject objectWarning)
@@ -275,7 +288,7 @@ public class ObstacleDetection : MonoBehaviour {
 			Physics.Raycast (transform.position, downDiagonal4, out hit, heightSlider.value) || Physics.Raycast (transform.position, forward, out hit, detectionDistance) ||
 			Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance))){
 
-			if (hit.collider.gameObject == dockTrigger || hit.collider.gameObject == lowWifiTriggger) {
+			if (hit.collider.gameObject == dockTrigger || hit.collider.gameObject == lowWifiTrigger || hit.collider.gameObject == midWifiTrigger || hit.collider.gameObject == highWifiTrigger ) { // added
 				//Debug.Log ("Trigger is HIT OBJECT");
 				transform.Translate (Vector3.forward * speed * Time.deltaTime);
 			}
@@ -299,7 +312,7 @@ public class ObstacleDetection : MonoBehaviour {
 			Physics.Raycast (transform.position, downDiagonal3, out hit, heightSlider.value) || Physics.Raycast (transform.position, back, out hit, detectionDistance) ||
 			Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance)) ){
 
-			if (hit.collider.gameObject == dockTrigger || hit.collider.gameObject == lowWifiTriggger) {
+			if (hit.collider.gameObject == dockTrigger || hit.collider.gameObject == lowWifiTrigger || hit.collider.gameObject == midWifiTrigger || hit.collider.gameObject == highWifiTrigger) { //added
 				transform.Translate (-Vector3.forward * speed * Time.deltaTime);
 			}
 		}
