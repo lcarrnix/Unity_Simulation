@@ -12,6 +12,11 @@ public class Docking : MonoBehaviour {
 	private bool clicked; // If parkBtn has been clicked
 	private bool stay; // If player is in trigger area
 
+
+	public Image LowWifiImage;
+	public Image MidWifiImage;
+	public Image HighWifiImage;
+
 	// This will only be displayed when the player is in trigger (near the dock)
 	public Button parkBtn;
 
@@ -27,6 +32,14 @@ public class Docking : MonoBehaviour {
 		parkBtn = parkBtn.GetComponent<Button> ();
 		parkBtn.enabled = false; //button is not interactable (for now)
 		parkBtn.gameObject.SetActive(false); //makes button disappear
+
+		//wifi images enabled
+		/**
+		HighWifiImage = HighWifiImage.GetComponent<Image> ();
+		HighWifiImage.enabled = true;
+		LowWifiImage = LowWifiImage.GetComponent<Image> ();
+		MidWifiImage = MidWifiImage.GetComponent<Image> ();
+		*/
 	}
 
 	// "It's the recommended place to apply forces and change Rigidbody settings"
@@ -51,6 +64,9 @@ public class Docking : MonoBehaviour {
 		parkBtn.enabled = true; // Button is interactable (for now)
 		parkBtn.gameObject.SetActive(true); // Makes button appear
 		stay = true;
+
+		//wifi image enabled
+		HighWifiImage.enabled = true;
 	}
 
 	// Hides parkBtn
