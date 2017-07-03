@@ -16,9 +16,12 @@ public class InterfaceScript : MonoBehaviour {
 	public Canvas settingsMenu;
 	public Canvas helpMenu;
 	public Canvas warningMenu;
+	public Canvas wifiMenu;
 
-	public Toggle warningToggle;
+	//toggles
 	public Toggle mapToggle;
+	public Toggle wifiToggle;
+	public Toggle warningToggle;
 
 	//things on main display
 	public Slider zoomSlider;
@@ -68,9 +71,11 @@ public class InterfaceScript : MonoBehaviour {
 		settingsMenu = settingsMenu.GetComponent<Canvas> ();
 		helpMenu = helpMenu.GetComponent<Canvas> ();
 		warningMenu = warningMenu.GetComponent<Canvas> ();
+		wifiMenu = wifiMenu.GetComponent<Canvas> ();
 
-		warningToggle = warningToggle.GetComponent<Toggle> ();
 		mapToggle = mapToggle.GetComponent<Toggle> ();
+		wifiToggle = wifiToggle.GetComponent<Toggle> ();
+		warningToggle = warningToggle.GetComponent<Toggle> ();
 
 		//main display components
 		exitBtn = exitBtn.GetComponent<Button> ();
@@ -104,9 +109,11 @@ public class InterfaceScript : MonoBehaviour {
 		settingsMenu.enabled = false;
 		helpMenu.enabled = false;
 		warningMenu.enabled = false;
+		wifiMenu.enabled = false;
 
-		warningToggle.enabled = false;
 		mapToggle.enabled = true;
+		wifiToggle.enabled = false;
+		warningToggle.enabled = false;
 
 		exitBtn.enabled = true;
 		zoomSlider.enabled = true;
@@ -150,9 +157,12 @@ public class InterfaceScript : MonoBehaviour {
 		settingsMenu.enabled = true;
 		helpMenu.enabled = false;
 		warningMenu.enabled = false;
+		wifiMenu.enabled = false;
 
-		warningToggle.enabled = false;
+		//toggles
 		mapToggle.enabled = false;
+		wifiToggle.enabled = false;
+		warningToggle.enabled = false;
 
 		//setting menu components
 		//scroll.enabled = true;
@@ -179,7 +189,6 @@ public class InterfaceScript : MonoBehaviour {
 		//help menu component
 		closeHelp.enabled = true;
 
-		warningToggle.enabled = false;
 		mapToggle.enabled = false;
 
 		//disabling buttons on settings menu
@@ -222,12 +231,18 @@ public class InterfaceScript : MonoBehaviour {
 		//enable all other buttons on interface
 	}
 
+	// When warning pop msg close btn is clicked
 	public void onCloseWarning(){
 		warningMenu.enabled = false;
 		warningToggle.enabled = false;
 	}
 
-	//FIXME: small bug here. Height is only changed briefly until player moves.
+	// When wifi pop msg close btn is clicked
+	public void onCloseWifi(){
+		wifiMenu.enabled = false;
+		wifiToggle.enabled = false;
+	}
+
 	public void changeHeightSlider(float value){
 		player.transform.position = new Vector3 (player.transform.position.x, value, player.transform.position.z);
 	}
