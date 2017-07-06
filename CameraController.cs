@@ -18,8 +18,9 @@ public class CameraController : MonoBehaviour {
 	// Use this for initialization
 	void Start () 
 	{		
-		Player = GameObject.Find ("Player");
-		offset = transform.position - Player.transform.position; //setting offset as distance between camera and ball
+		Player = GameObject.Find ("screen");
+		// Setting offset as distance between camera and ball
+		offset = transform.position - Player.transform.position;
 	}
 
 	void Update()

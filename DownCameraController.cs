@@ -14,6 +14,7 @@ public class DownCameraController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+		Player = GameObject.Find ("Player"); //added 7/6
 		offset = transform.position - Player.transform.position; //sets desired distance between player and down-angled camera 
 	}
 	

@@ -84,8 +84,8 @@ public class ControlMethods : MonoBehaviour {
 			float temp3 = Player.transform.rotation.y;
 			float temp4 = Player.transform.rotation.z; 
 			float temp5 = Player.transform.rotation.x;
-			temp5 = 0;
-			temp4 = 0;
+			temp5 = 0; //changed 7/4
+			temp4 = 0; //changed 7/4
 
 		}
 		if (Input.GetKey (KeyCode.R)) 

@@ -68,7 +68,7 @@ public class ObstacleDetection : MonoBehaviour {
 		warningToggle.enabled = false;
 		warningDisplayed = false;
 
-		dockTrigger = GameObject.Find ("Trigger");
+		dockTrigger = GameObject.Find ("DockTrigger");
 		noWifiTrigger = GameObject.Find ("NoWifiTrigger");
 		lowWifiTrigger = GameObject.Find ("LowWifiTrigger");
 		midWifiTrigger = GameObject.Find ("MidWifiTrigger"); //added 6/28

@@ -8,7 +8,11 @@ using UnityEngine.SceneManagement;
 public class InterfaceScript : MonoBehaviour {
 
 	public Button parkBtn;
+	// origianl for when changing height slider
 	public GameObject player;
+	// new idea for height slider
+	public GameObject screen;
+	public GameObject stand;
 
 	//canvases/menus
 	public Canvas mainInterface;
@@ -26,9 +30,12 @@ public class InterfaceScript : MonoBehaviour {
 	//things on main display
 	public Slider zoomSlider;
 	public Slider volumeSlider;
+	public Slider heightSlider;
+	public Slider speedSlider;
 	public Button exitBtn;
 	public Button settings;
-	public Button callButton; //added 6/29
+	public Button callButton;
+
 
 	//things on settings menu
 	//public Scrollbar scroll; //not sure if this is right?
@@ -57,11 +64,14 @@ public class InterfaceScript : MonoBehaviour {
 	void Start () {
 
 		player = GameObject.Find ("Player");
+		screen = GameObject.Find ("screen");
+		stand = GameObject.Find ("stand");
+
 		mapCam = mapCam.GetComponent<Camera> ();
 		disMapCam = disMapCam.GetComponent<Camera> ();
 		mapToggleDisabled = mapToggleDisabled.GetComponent<Text> ();
 
-		parkBtn = parkBtn.GetComponent<Button> ();//GameObject.FindObjectOfType<Button>();
+		parkBtn = parkBtn.GetComponent<Button> ();
 		parkBtn.enabled = false; //button is not interactable (for now)
 		parkBtn.gameObject.SetActive(false); //makes button disappear
 
@@ -81,8 +91,10 @@ public class InterfaceScript : MonoBehaviour {
 		exitBtn = exitBtn.GetComponent<Button> ();
 		zoomSlider = zoomSlider.GetComponent<Slider> ();
 		volumeSlider = volumeSlider.GetComponent<Slider> ();
+		heightSlider = heightSlider.GetComponent<Slider> ();
+		speedSlider = speedSlider.GetComponent<Slider> ();
 		settings = settings.GetComponent<Button> ();
-		callButton = callButton.GetComponent<Button> (); //added 6/29
+		callButton = callButton.GetComponent<Button> ();
 
 
 		//settings menu components
@@ -95,6 +107,9 @@ public class InterfaceScript : MonoBehaviour {
 		//help menu components
 		closeHelp = closeHelp.GetComponent<Button> ();
 
+
+		/**
+		 * commented out by amanda on 7/6
 		//testing hover over
 		theText = zoomInfo.GetComponent<Text>();
 		zoomInfo = zoomInfo.GetComponent<Text>();
@@ -102,6 +117,8 @@ public class InterfaceScript : MonoBehaviour {
 		zoomInfo.enabled = false; //displayed when zoom is hovered over
 		zoomInfo.color = Color.clear; //invisible
 		theText.color = Color.clear;
+
+		*/
 
 		//main display interface is on at start of simulation, other menus are hidden
 		mainInterface.enabled = true; //interface always on top of view
@@ -118,8 +135,10 @@ public class InterfaceScript : MonoBehaviour {
 		exitBtn.enabled = true;
 		zoomSlider.enabled = true;
 		volumeSlider.enabled = true;
+		heightSlider.enabled = true;
+		speedSlider.enabled = true;
 		settings.enabled = true;
-		callButton.enabled = true; //added 6/29
+		callButton.enabled = true; 
 
 		//scroll.enabled = false;
 		micToggle.enabled = false;
@@ -175,8 +194,10 @@ public class InterfaceScript : MonoBehaviour {
 		exitBtn.enabled = false;
 		zoomSlider.enabled = false;
 		volumeSlider.enabled = false;
+		heightSlider.enabled = false; //added 7/5
+		speedSlider.enabled = false; //added 7/5
 		settings.enabled = false;
-		callButton.enabled = false; //added 6/29
+		callButton.enabled = false; 
 
 		//pressing close on settings menu will send to NoPress()
 	}
@@ -207,16 +228,21 @@ public class InterfaceScript : MonoBehaviour {
 		exitBtn.enabled = false;
 		zoomSlider.enabled = false;
 		volumeSlider.enabled = false;
+		heightSlider.enabled = false; //added 7/5
+		speedSlider.enabled = false; //added 7/5
 		settings.enabled = false;
 		mapToggle.enabled = false;
-		callButton.enabled = false; //added 6/29
+		callButton.enabled = false; 
+
+		//deactive height slider and speed slider
 
 		//need to disable other buttons on interface
 		//pressing yes will send to ExitGame()
 		//pressing no will send to NoPress()
 	}
 
-	public void NoPress() //pressing no to continue from exit menu/pressing close on settings menu
+	// Pressing no to continue from exit menu/pressing close on settings menu
+	public void NoPress()
 	{
 		mainInterface.enabled = true;
 		quitMenu.enabled = false;
@@ -224,6 +250,8 @@ public class InterfaceScript : MonoBehaviour {
 		exitBtn.enabled = true;
 		zoomSlider.enabled = true;
 		volumeSlider.enabled = true;
+		heightSlider.enabled = true; //added 7/5
+		speedSlider.enabled = true; //added 7/5
 		settings.enabled = true;
 		mapToggle.enabled = true;
 		callButton.enabled = true; //added 6/29
@@ -244,7 +272,14 @@ public class InterfaceScript : MonoBehaviour {
 	}
 
 	public void changeHeightSlider(float value){
-		player.transform.position = new Vector3 (player.transform.position.x, value, player.transform.position.z);
+		// this works for ball, but not for telepresence system object
+		//player.transform.position = new Vector3 (player.transform.position.x, value, player.transform.position.z);
+
+		//player.transform.localScale = new Vector3 (player.transform.localScale.x, value, player.transform.localScale.z);
+		stand.transform.localScale = new Vector3 (stand.transform.localScale.x, value, stand.transform.localScale.z);
+		stand.transform.position = new Vector3 (stand.transform.position.x, value, stand.transform.position.z);
+
+		screen.transform.position = new Vector3 (screen.transform.position.x, stand.transform.position.y + value , screen.transform.position.z);
 	}
 
 	//TESTING HOVER OVER
@@ -272,10 +307,10 @@ public class InterfaceScript : MonoBehaviour {
 	}*/
 	//END TESTING HOVER OVER- currently not working*
 
-	public void ExitGame() //ending session- jumps to exit screen
+	// Ending session- jumps to call screen
+	public void ExitGame()
 	{
 		SceneManager.LoadScene ("CallScene");
 	}
-
 
 }
