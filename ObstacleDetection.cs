@@ -74,6 +74,7 @@ public class ObstacleDetection : MonoBehaviour {
 		midWifiTrigger = GameObject.Find ("MidWifiTrigger"); //added 6/28
 		highWifiTrigger = GameObject.Find ("HighWifiTrigger"); //added 6/28
 
+
 		speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
 
 		PlayerControlInstance = GetComponent<PlayerController> ();
@@ -290,8 +291,8 @@ public class ObstacleDetection : MonoBehaviour {
 			Physics.Raycast (transform.position, downDiagonal4, out hit, heightSlider.value) || Physics.Raycast (transform.position, forward, out hit, detectionDistance) ||
 			Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance))){
 
-			if (hit.collider.gameObject == dockTrigger || hit.collider.gameObject == noWifiTrigger || hit.collider.gameObject == lowWifiTrigger || hit.collider.gameObject == midWifiTrigger || hit.collider.gameObject == highWifiTrigger ) { // added
-				//Debug.Log ("Trigger is HIT OBJECT");
+			if (hit.collider.gameObject.CompareTag("path") || hit.collider.gameObject == dockTrigger || hit.collider.gameObject == noWifiTrigger || hit.collider.gameObject == lowWifiTrigger || hit.collider.gameObject == midWifiTrigger || hit.collider.gameObject == highWifiTrigger ) { // added
+				//Debug.Log ("Trigger is HIT OBJECT or PATH");
 				transform.Translate (Vector3.forward * speed * Time.deltaTime);
 			}
 		}
@@ -314,7 +315,7 @@ public class ObstacleDetection : MonoBehaviour {
 			Physics.Raycast (transform.position, downDiagonal3, out hit, heightSlider.value) || Physics.Raycast (transform.position, back, out hit, detectionDistance) ||
 			Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance) || Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance)) ){
 
-			if (hit.collider.gameObject == dockTrigger || hit.collider.gameObject == noWifiTrigger || hit.collider.gameObject == lowWifiTrigger || hit.collider.gameObject == midWifiTrigger || hit.collider.gameObject == highWifiTrigger) { //added
+			if (hit.collider.gameObject.CompareTag("path") || hit.collider.gameObject == dockTrigger || hit.collider.gameObject == noWifiTrigger || hit.collider.gameObject == lowWifiTrigger || hit.collider.gameObject == midWifiTrigger || hit.collider.gameObject == highWifiTrigger) { //added
 				transform.Translate (-Vector3.forward * speed * Time.deltaTime);
 			}
 		}
