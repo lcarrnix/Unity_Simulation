@@ -21,11 +21,13 @@ public class InterfaceScript : MonoBehaviour {
 	public Canvas helpMenu;
 	public Canvas warningMenu;
 	public Canvas wifiMenu;
+	public Canvas authMenu; //added 7/12
 
 	//toggles
 	public Toggle mapToggle;
 	public Toggle wifiToggle;
 	public Toggle warningToggle;
+	public Toggle authToggle; //added 7/12
 
 	//things on main display
 	public Slider zoomSlider;
@@ -82,6 +84,7 @@ public class InterfaceScript : MonoBehaviour {
 		helpMenu = helpMenu.GetComponent<Canvas> ();
 		warningMenu = warningMenu.GetComponent<Canvas> ();
 		wifiMenu = wifiMenu.GetComponent<Canvas> ();
+		authMenu = authMenu.GetComponent<Canvas> (); //added 7/12
 
 		mapToggle = mapToggle.GetComponent<Toggle> ();
 		wifiToggle = wifiToggle.GetComponent<Toggle> ();
@@ -127,6 +130,7 @@ public class InterfaceScript : MonoBehaviour {
 		helpMenu.enabled = false;
 		warningMenu.enabled = false;
 		wifiMenu.enabled = false;
+		authMenu.enabled = false; //added 7/12
 
 		mapToggle.enabled = true;
 		wifiToggle.enabled = false;
@@ -177,6 +181,7 @@ public class InterfaceScript : MonoBehaviour {
 		helpMenu.enabled = false;
 		warningMenu.enabled = false;
 		wifiMenu.enabled = false;
+		authMenu.enabled = false; //added 7/12
 
 		//toggles
 		mapToggle.enabled = false;
@@ -264,6 +269,15 @@ public class InterfaceScript : MonoBehaviour {
 		warningMenu.enabled = false;
 		warningToggle.enabled = false;
 	}
+
+	//added 7/12
+	//not working
+	public void onCloseAuth(){
+		authMenu.enabled = false;
+		authToggle.enabled = false;
+	}
+	//added 7/12
+
 
 	// When wifi pop msg close btn is clicked
 	public void onCloseWifi(){
