@@ -9,6 +9,9 @@ public class ObstacleDetection : MonoBehaviour {
 	public Canvas warningMenu;
 	public Toggle warningToggle;
 	private bool warningDisplayed;
+	public Canvas authMenu; //added 7/12
+	public Toggle authToggle; //added 7/12
+	private bool authDisplayed; //added 7/12
 
 	PlayerController PlayerControlInstance; //instance of PlayerController class
 	ControlMethods ControlMethInstance; //instance of ControlMethods class
@@ -22,6 +25,7 @@ public class ObstacleDetection : MonoBehaviour {
 	public GameObject midWifiTrigger;
 	public GameObject highWifiTrigger;
 	private GameObject theHitObject; //for obstacle detection
+	public GameObject authTrigger; //added 7/12
 
 	public GameObject[] deskObstacles; //for clearing obstacle warnings- desks
 	public GameObject[] wallObstacles; //for clearing obstacle warnings- walls
@@ -68,11 +72,20 @@ public class ObstacleDetection : MonoBehaviour {
 		warningToggle.enabled = false;
 		warningDisplayed = false;
 
+		//added 7/12
+		authMenu = authMenu.GetComponent<Canvas> ();
+		authMenu.enabled = false;
+		authToggle = authToggle.GetComponent<Toggle> ();
+		authToggle.enabled = false;
+		authDisplayed = false; 
+		//added 7/12
+
 		dockTrigger = GameObject.Find ("DockTrigger");
 		noWifiTrigger = GameObject.Find ("NoWifiTrigger");
 		lowWifiTrigger = GameObject.Find ("LowWifiTrigger");
-		midWifiTrigger = GameObject.Find ("MidWifiTrigger"); //added 6/28
-		highWifiTrigger = GameObject.Find ("HighWifiTrigger"); //added 6/28
+		midWifiTrigger = GameObject.Find ("MidWifiTrigger"); 
+		highWifiTrigger = GameObject.Find ("HighWifiTrigger"); 
+		authTrigger = GameObject.Find ("AuthTrigger"); //added 7/12
 
 
 		speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
@@ -142,8 +155,19 @@ public class ObstacleDetection : MonoBehaviour {
 			warningToggle.enabled = true;
 			warningDisplayed = true;
 		}
-
 	}
+		
+	//added 7/12
+	//working
+	void displayAuth(){
+		if (authToggle.isOn && authDisplayed == false) {
+			authMenu.enabled = true;
+			authToggle.enabled = true;
+			authDisplayed = true;
+		}
+	}
+	//added 7/12
+
 
 	//main function for detecting obstacles
 	//will call functions to display colors corresponding to obstacles and decrease speed for obstacle avoidance
@@ -155,24 +179,29 @@ public class ObstacleDetection : MonoBehaviour {
 			(Physics.Raycast (transform.position, diagonal1, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, downDiagonal1, heightSlider.value)) ||
 			(Physics.Raycast (transform.position, diagonal2, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, downDiagonal2, heightSlider.value)) ||
 			(Physics.Raycast (transform.position, diagonal3, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, downDiagonal3, heightSlider.value)) ||
-			(Physics.Raycast (transform.position, diagonal4, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, downDiagonal4, heightSlider.value)) ) {
+			(Physics.Raycast (transform.position, diagonal4, detectionDistance * 1.5f)) || (Physics.Raycast (transform.position, downDiagonal4, heightSlider.value)) ) 
+		{
 
 			//checking which direction obstacle is in relative to player
 			//front, front-right diagonal, front-left diagonal
-			if(Physics.Raycast (transform.position, forward, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, downForward, out hit, heightSlider.value) ||
-				Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal1, out hit, heightSlider.value) ||
-				Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal4, out hit, heightSlider.value) ){
-
+			if (Physics.Raycast (transform.position, forward, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, downForward, out hit, heightSlider.value) ||
+			   Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal1, out hit, heightSlider.value) ||
+			   Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal4, out hit, heightSlider.value)) {
 				theHitObject = hit.collider.gameObject; //sets to obstacle at hand
 				//pathObjects = GameObject.FindGameObjectsWithTag("path");
-				if (theHitObject.CompareTag("furniture") || theHitObject.CompareTag("wall")){
+				if (theHitObject.CompareTag ("furniture") || theHitObject.CompareTag ("wall")) {
 					//there is an obstacle near user, so slowing down user's speed
 					speed = decreasedSpeed;
 					redObstacleWarning (theHitObject); //changes color to red
-					displayWarning();
+					//if statement so that the two messages do not overlap
+					//if (authMenu.enabled = false) { //added 7/12
+					displayWarning ();
+					//}
 				}
-			}
-
+				//} else if (theHitObject.CompareTag("AuthTrigger")){
+				//	displayAuth();
+				//}
+		
 			if(Physics.Raycast (transform.position, back, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, downBack, out hit, heightSlider.value) ||
 				Physics.Raycast (transform.position, left, out hit, detectionDistance * 1.7f) || Physics.Raycast (transform.position, right, out hit, detectionDistance * 1.7f) ||
 				Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal2, out hit, heightSlider.value) ||
@@ -183,7 +212,11 @@ public class ObstacleDetection : MonoBehaviour {
 				if (theHitObject.CompareTag("furniture") || theHitObject.CompareTag("wall")){
 					speed = decreasedSpeed;
 					yellowObstacleWarning (theHitObject); //changes color to yellow
-					displayWarning();
+
+					//if statement so that the two messages do not overlap
+					//if (authMenu.enabled = false) { //added 7/12
+						displayWarning ();
+					//}
 				}
 			}
 
@@ -225,6 +258,7 @@ public class ObstacleDetection : MonoBehaviour {
 			speed = speedSlider.value;
 
 			warningDisplayed = false;
+			authDisplayed = false; //added 7/12
 
 			//Testing purposes: deskObstacles = GameObject.FindGameObjectsWithTag ("desk");
 			deskObstacles = GameObject.FindGameObjectsWithTag ("furniture");
@@ -244,6 +278,14 @@ public class ObstacleDetection : MonoBehaviour {
 				warningToggle.enabled = false;
 				warningDisplayed = false;
 			}
+			//added 7/12
+			//working
+			else if(authToggle.isOn){
+				authMenu.enabled = false;
+				authToggle.enabled = false;
+				authDisplayed = false;
+			}
+			//added 7/12
 		}
 	}
 
