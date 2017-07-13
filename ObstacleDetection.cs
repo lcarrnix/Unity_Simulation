@@ -9,9 +9,9 @@ public class ObstacleDetection : MonoBehaviour {
 	public Canvas warningMenu;
 	public Toggle warningToggle;
 	private bool warningDisplayed;
-	public Canvas authMenu; //added 7/12
-	public Toggle authToggle; //added 7/12
-	private bool authDisplayed; //added 7/12
+	public Canvas AuthMenu; //added 7/12
+	public Toggle AuthToggle; //added 7/12
+	private bool AuthDisplayed; //added 7/12
 
 	PlayerController PlayerControlInstance; //instance of PlayerController class
 	ControlMethods ControlMethInstance; //instance of ControlMethods class
@@ -25,7 +25,7 @@ public class ObstacleDetection : MonoBehaviour {
 	public GameObject midWifiTrigger;
 	public GameObject highWifiTrigger;
 	private GameObject theHitObject; //for obstacle detection
-	public GameObject authTrigger; //added 7/12
+	public GameObject AuthTrigger; //added 7/12
 
 	public GameObject[] deskObstacles; //for clearing obstacle warnings- desks
 	public GameObject[] wallObstacles; //for clearing obstacle warnings- walls
@@ -73,11 +73,11 @@ public class ObstacleDetection : MonoBehaviour {
 		warningDisplayed = false;
 
 		//added 7/12
-		authMenu = authMenu.GetComponent<Canvas> ();
-		authMenu.enabled = false;
-		authToggle = authToggle.GetComponent<Toggle> ();
-		authToggle.enabled = false;
-		authDisplayed = false; 
+		AuthMenu = AuthMenu.GetComponent<Canvas> ();
+		AuthMenu.enabled = false;
+		AuthToggle = AuthToggle.GetComponent<Toggle> ();
+		AuthToggle.enabled = false;
+		AuthDisplayed = false; 
 		//added 7/12
 
 		dockTrigger = GameObject.Find ("DockTrigger");
@@ -85,7 +85,7 @@ public class ObstacleDetection : MonoBehaviour {
 		lowWifiTrigger = GameObject.Find ("LowWifiTrigger");
 		midWifiTrigger = GameObject.Find ("MidWifiTrigger"); 
 		highWifiTrigger = GameObject.Find ("HighWifiTrigger"); 
-		authTrigger = GameObject.Find ("AuthTrigger"); //added 7/12
+		AuthTrigger = GameObject.Find ("AuthTrigger"); //added 7/12
 
 
 		speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
@@ -160,10 +160,10 @@ public class ObstacleDetection : MonoBehaviour {
 	//added 7/12
 	//working
 	void displayAuth(){
-		if (authToggle.isOn && authDisplayed == false) {
-			authMenu.enabled = true;
-			authToggle.enabled = true;
-			authDisplayed = true;
+		if (AuthToggle.isOn && AuthDisplayed == false) {
+			AuthMenu.enabled = true;
+			AuthToggle.enabled = true;
+			AuthDisplayed = true;
 		}
 	}
 	//added 7/12
@@ -186,26 +186,28 @@ public class ObstacleDetection : MonoBehaviour {
 			//front, front-right diagonal, front-left diagonal
 			if (Physics.Raycast (transform.position, forward, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, downForward, out hit, heightSlider.value) ||
 			   Physics.Raycast (transform.position, diagonal1, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal1, out hit, heightSlider.value) ||
-			   Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal4, out hit, heightSlider.value)) {
+			   Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal4, out hit, heightSlider.value)) 
+			{
 				theHitObject = hit.collider.gameObject; //sets to obstacle at hand
 				//pathObjects = GameObject.FindGameObjectsWithTag("path");
 				if (theHitObject.CompareTag ("furniture") || theHitObject.CompareTag ("wall")) {
 					//there is an obstacle near user, so slowing down user's speed
 					speed = decreasedSpeed;
 					redObstacleWarning (theHitObject); //changes color to red
-					//if statement so that the two messages do not overlap
-					//if (authMenu.enabled = false) { //added 7/12
 					displayWarning ();
-					//}
 				}
-				//} else if (theHitObject.CompareTag("AuthTrigger")){
-				//	displayAuth();
-				//}
-		
+
+				if (theHitObject == AuthTrigger){
+					Debug.Log ("In else if - hit is authTrigger");
+					displayAuth();
+				}
+
+			}
 			if(Physics.Raycast (transform.position, back, out hit, detectionDistance * 2) || Physics.Raycast (transform.position, downBack, out hit, heightSlider.value) ||
 				Physics.Raycast (transform.position, left, out hit, detectionDistance * 1.7f) || Physics.Raycast (transform.position, right, out hit, detectionDistance * 1.7f) ||
 				Physics.Raycast (transform.position, diagonal2, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal2, out hit, heightSlider.value) ||
-				Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal3, out hit, heightSlider.value)){
+				Physics.Raycast (transform.position, diagonal3, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal3, out hit, heightSlider.value))
+			{
 
 				theHitObject = hit.collider.gameObject;
 				//pathObjects = GameObject.FindGameObjectsWithTag("path");
@@ -225,7 +227,7 @@ public class ObstacleDetection : MonoBehaviour {
 	}
 
 	//if an obstacle has been detected as a warning in front/back of player
-	GameObject redObstacleWarning(GameObject objectWarning)
+	GameObject redObstacleWarning (GameObject objectWarning)
 	{
 		//visual warnings take place here- red to front and back obstacles (most severe) 
 		objectWarning.GetComponent<Renderer>().material.color = new Color(1, 0, 0, 1); //red
@@ -258,7 +260,7 @@ public class ObstacleDetection : MonoBehaviour {
 			speed = speedSlider.value;
 
 			warningDisplayed = false;
-			authDisplayed = false; //added 7/12
+			AuthDisplayed = false; //added 7/12
 
 			//Testing purposes: deskObstacles = GameObject.FindGameObjectsWithTag ("desk");
 			deskObstacles = GameObject.FindGameObjectsWithTag ("furniture");
@@ -280,10 +282,10 @@ public class ObstacleDetection : MonoBehaviour {
 			}
 			//added 7/12
 			//working
-			else if(authToggle.isOn){
-				authMenu.enabled = false;
-				authToggle.enabled = false;
-				authDisplayed = false;
+			if(AuthToggle.isOn){
+				AuthMenu.enabled = false;
+				AuthToggle.enabled = false;
+				AuthDisplayed = false;
 			}
 			//added 7/12
 		}

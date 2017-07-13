@@ -5,30 +5,37 @@ using UnityEngine.UI;
 
 public class BedroomTrigger : MonoBehaviour {
 
-	public Canvas authMenu;
-	public GameObject authTrigger;  
+	public Canvas AuthMenu;
+	public Toggle AuthToggle;
+	//public GameObject AuthTrigger;  
 	// Use this for initialization
 	void Start () {
 
-		authMenu = authMenu.GetComponent<Canvas> ();
-		authMenu.enabled = false;
-		authTrigger = GameObject.Find ("AuthTrigger"); 
+		AuthMenu = AuthMenu.GetComponent<Canvas> ();
+		AuthMenu.enabled = false;
+
+		AuthToggle = AuthToggle.GetComponent<Toggle> ();
+		AuthToggle.enabled = false; 
+
+		//AuthTrigger = GameObject.Find ("AuthTrigger"); 
 	}
 		
 	void OnTriggerEnter (Collider other){
-		authMenu.enabled = true;
+		AuthMenu.enabled = true;
+		AuthToggle.enabled = true;
 		Debug.Log ("enter bedroom");
 	}
 
 	void OnTriggerStay (Collider other){
 		// Activate warning when entering and staying in trigger zone
-		authMenu.enabled = true;
+		//AuthMenu.enabled = true;
 		Debug.Log ("in bedroom");
 	}
 
 	void OnTriggerExit (Collider other){
 		//deactivate warning when leaving trigger zone
-		authMenu.enabled = false;
+		AuthMenu.enabled = false;
+		AuthToggle.enabled = false;
 		Debug.Log ("leave bedroom");
 	}
 
