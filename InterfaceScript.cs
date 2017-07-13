@@ -19,15 +19,15 @@ public class InterfaceScript : MonoBehaviour {
 	public Canvas quitMenu; 
 	public Canvas settingsMenu;
 	public Canvas helpMenu;
-	public Canvas warningMenu;
 	public Canvas wifiMenu;
-	public Canvas authMenu; //added 7/12
+	public Canvas warningMenu;
+	public Canvas AuthMenu; //added 7/12
 
 	//toggles
 	public Toggle mapToggle;
 	public Toggle wifiToggle;
 	public Toggle warningToggle;
-	public Toggle authToggle; //added 7/12
+	public Toggle AuthToggle; //added 7/12
 
 	//things on main display
 	public Slider zoomSlider;
@@ -82,13 +82,14 @@ public class InterfaceScript : MonoBehaviour {
 		quitMenu = quitMenu.GetComponent<Canvas> ();
 		settingsMenu = settingsMenu.GetComponent<Canvas> ();
 		helpMenu = helpMenu.GetComponent<Canvas> ();
-		warningMenu = warningMenu.GetComponent<Canvas> ();
 		wifiMenu = wifiMenu.GetComponent<Canvas> ();
-		authMenu = authMenu.GetComponent<Canvas> (); //added 7/12
+		warningMenu = warningMenu.GetComponent<Canvas> ();
+		AuthMenu = AuthMenu.GetComponent<Canvas> (); //added 7/12
 
 		mapToggle = mapToggle.GetComponent<Toggle> ();
 		wifiToggle = wifiToggle.GetComponent<Toggle> ();
 		warningToggle = warningToggle.GetComponent<Toggle> ();
+		AuthToggle = AuthToggle.GetComponent<Toggle> ();
 
 		//main display components
 		exitBtn = exitBtn.GetComponent<Button> ();
@@ -128,13 +129,14 @@ public class InterfaceScript : MonoBehaviour {
 		quitMenu.enabled = false; 
 		settingsMenu.enabled = false;
 		helpMenu.enabled = false;
-		warningMenu.enabled = false;
 		wifiMenu.enabled = false;
-		authMenu.enabled = false; //added 7/12
+		warningMenu.enabled = false;
+		AuthMenu.enabled = false; //added 7/12
 
 		mapToggle.enabled = true;
 		wifiToggle.enabled = false;
 		warningToggle.enabled = false;
+		AuthToggle.enabled = false;
 
 		exitBtn.enabled = true;
 		zoomSlider.enabled = true;
@@ -179,14 +181,15 @@ public class InterfaceScript : MonoBehaviour {
 		mainInterface.enabled = false; //hiding other canvas
 		settingsMenu.enabled = true;
 		helpMenu.enabled = false;
-		warningMenu.enabled = false;
 		wifiMenu.enabled = false;
-		authMenu.enabled = false; //added 7/12
+		warningMenu.enabled = false;
+		AuthMenu.enabled = false; //added 7/12
 
 		//toggles
 		mapToggle.enabled = false;
 		wifiToggle.enabled = false;
 		warningToggle.enabled = false;
+		AuthToggle.enabled = false;
 
 		//setting menu components
 		//scroll.enabled = true;
@@ -273,8 +276,8 @@ public class InterfaceScript : MonoBehaviour {
 	//added 7/12
 	//not working
 	public void onCloseAuth(){
-		authMenu.enabled = false;
-		authToggle.enabled = false;
+		AuthMenu.enabled = false;
+		AuthToggle.enabled = false;
 	}
 	//added 7/12
 
