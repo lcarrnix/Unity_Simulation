@@ -275,11 +275,16 @@ public class ObstacleDetection : MonoBehaviour {
 				wallObstacle.GetComponent<Renderer> ().material.color = new Color (1, 1, 1, 1); //white
 			}
 
-			if (warningToggle.isOn) {  //turning or backing up will turn off the warning screen 
-				warningMenu.enabled = false;
-				warningToggle.enabled = false;
-				warningDisplayed = false;
-			}
+			//turning or backing up will turn off the warning screen
+			warningMenu.enabled = false;
+			warningToggle.enabled = false;
+			warningDisplayed = false;
+
+			/*
+			There was a bug when we unchecked the warning toggle. ^It's now fixed.
+			If you are having issues with the auth toggle, just copy code above.
+			*/
+
 			//added 7/12
 			//working
 			if(AuthToggle.isOn){
