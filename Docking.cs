@@ -5,23 +5,39 @@ using UnityEngine.UI;
 
 public class Docking : MonoBehaviour {
 
+	/*
+	THIS CODE ISN'T REALLY WORKING... When auto park presed or clicked, player can no longer move plus there are some weird bugs with it.
+	*/
+
 	public GameObject player;
 	public Rigidbody rb;
 	public GameObject dockCube;
 	public Slider speedSlider;
-	private bool clicked; // If parkBtn has been clicked
-	private bool stay; // If player is in trigger area
+	private bool inTriggerArea; // If player is in trigger area
+	private bool selectedAuto; // If player clicked parkBtn or pressed 'p'
+	private Vector3 destination;
 
 	// This will only be displayed when the player is in trigger (near the dock)
 	public Button parkBtn;
+
+	void autoPark(){
+		if(selectedAuto == true && inTriggerArea == true){
+			player.transform.position = destination;
+			selectedAuto = false;
+			Debug.Log ("in autopark function");
+		}
+	}
 
 	void Start(){
 		player = GameObject.Find ("Player");
 		rb = rb.GetComponent<Rigidbody> ();
 		dockCube = GameObject.Find ("Dock Cube");
 		speedSlider = speedSlider.GetComponent<Slider> ();
-		clicked = false;
-		stay = false;
+		inTriggerArea = false;
+		selectedAuto = false;
+		destination = new Vector3 (dockCube.transform.position.x, player.transform.position.y, dockCube.transform.position.z);
+		Debug.Log ("Destination: " + destination);
+		Debug.Log ("Dock: " + dockCube.transform.position.x + " " + dockCube.transform.position.y + " " + dockCube.transform.position.z);
 
 		// Autonomous driving stuff
 		parkBtn = parkBtn.GetComponent<Button> ();
@@ -29,28 +45,24 @@ public class Docking : MonoBehaviour {
 		parkBtn.gameObject.SetActive(false); //makes button disappear
 	}
 
+	void Update(){
+		if(inTriggerArea == true && Input.GetKey(KeyCode.P)){
+			selectedAuto = true;
+		}
+		autoPark ();
+	}
+
 	// "It's the recommended place to apply forces and change Rigidbody settings"
 	// Figure out working code for autonomous feature, fam
-	void FixedUpdate(){
-		// Player is in trigger area and the key 'P' has been pressed
-		if (stay && Input.GetKey (KeyCode.P)) {
-			//brute force works:
-			player.transform.position = dockCube.transform.position;
-		}
-		// This does not work...
-		// It basically just teleports player to dock (a lot like transform.position), but also breaks rigidbody code/obstacle detection code...
-		/*if(stay && clicked){
-			// Ray dir = new Ray (player.transform.position, dockCube.transform.position);
-			// rb.AddForce (dir.direction * speedSlider.value);
-		}*/
-	}
+	//void FixedUpdate()
 
 	// Displays parkBtn
 	void OnTriggerStay(Collider other){
 		//Debug.Log ("WITHIN trigger...");
 		parkBtn.enabled = true; // Button is interactable (for now)
 		parkBtn.gameObject.SetActive(true); // Makes button appear
-		stay = true;
+
+		inTriggerArea = true;
 	}
 
 	// Hides parkBtn
@@ -59,19 +71,13 @@ public class Docking : MonoBehaviour {
 		parkBtn.enabled = false;
 		parkBtn.gameObject.SetActive(false);
 
-		clicked = false;
-		stay = false;
+		inTriggerArea = false;
+		selectedAuto = false;
 	}
 
 	public void onBtnClick(){
 		//set up auto-docking code here
 		Debug.Log ("PARKING BTN CLICKED");
-		clicked = true;
-		//Debug.Log ("Dock positon: " + dockCube.transform.position);
-		//Debug.Log ("Player positon: " + player.transform.position);
-
-		// This should probably be in FixedUpdate()
-		// Brute force works:
-		player.transform.position = dockCube.transform.position;
+		selectedAuto = true;
 	}
 }
