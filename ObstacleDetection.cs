@@ -9,9 +9,9 @@ public class ObstacleDetection : MonoBehaviour {
 	public Canvas warningMenu;
 	public Toggle warningToggle;
 	private bool warningDisplayed;
-	public Canvas AuthMenu; //added 7/12
-	public Toggle AuthToggle; //added 7/12
-	private bool AuthDisplayed; //added 7/12
+	public Canvas AuthMenu;
+	public Toggle AuthToggle; 
+	private bool AuthDisplayed; 
 
 	PlayerController PlayerControlInstance; //instance of PlayerController class
 	ControlMethods ControlMethInstance; //instance of ControlMethods class
@@ -25,7 +25,7 @@ public class ObstacleDetection : MonoBehaviour {
 	public GameObject midWifiTrigger;
 	public GameObject highWifiTrigger;
 	private GameObject theHitObject; //for obstacle detection
-	public GameObject AuthTrigger; //added 7/12
+	public GameObject AuthTrigger;
 
 	public GameObject[] deskObstacles; //for clearing obstacle warnings- desks
 	public GameObject[] wallObstacles; //for clearing obstacle warnings- walls
@@ -72,20 +72,12 @@ public class ObstacleDetection : MonoBehaviour {
 		warningToggle.enabled = false;
 		warningDisplayed = false;
 
-		//added 7/12
-		AuthMenu = AuthMenu.GetComponent<Canvas> ();
-		AuthMenu.enabled = false;
-		AuthToggle = AuthToggle.GetComponent<Toggle> ();
-		AuthToggle.enabled = false;
-		AuthDisplayed = false; 
-		//added 7/12
-
 		dockTrigger = GameObject.Find ("DockTrigger");
 		noWifiTrigger = GameObject.Find ("NoWifiTrigger");
 		lowWifiTrigger = GameObject.Find ("LowWifiTrigger");
 		midWifiTrigger = GameObject.Find ("MidWifiTrigger"); 
 		highWifiTrigger = GameObject.Find ("HighWifiTrigger"); 
-		AuthTrigger = GameObject.Find ("AuthTrigger"); //added 7/12
+		AuthTrigger = GameObject.Find ("AuthTrigger"); 
 
 
 		speedSlider = GameObject.Find ("Speed Slider").GetComponent<Slider> ();
@@ -156,18 +148,6 @@ public class ObstacleDetection : MonoBehaviour {
 			warningDisplayed = true;
 		}
 	}
-		
-	//added 7/12
-	//working
-	void displayAuth(){
-		if (AuthToggle.isOn && AuthDisplayed == false) {
-			AuthMenu.enabled = true;
-			AuthToggle.enabled = true;
-			AuthDisplayed = true;
-		}
-	}
-	//added 7/12
-
 
 	//main function for detecting obstacles
 	//will call functions to display colors corresponding to obstacles and decrease speed for obstacle avoidance
@@ -189,17 +169,11 @@ public class ObstacleDetection : MonoBehaviour {
 			   Physics.Raycast (transform.position, diagonal4, out hit, detectionDistance * 1.5f) || Physics.Raycast (transform.position, downDiagonal4, out hit, heightSlider.value)) 
 			{
 				theHitObject = hit.collider.gameObject; //sets to obstacle at hand
-				//pathObjects = GameObject.FindGameObjectsWithTag("path");
 				if (theHitObject.CompareTag ("furniture") || theHitObject.CompareTag ("wall")) {
 					//there is an obstacle near user, so slowing down user's speed
 					speed = decreasedSpeed;
 					redObstacleWarning (theHitObject); //changes color to red
 					displayWarning ();
-				}
-
-				if (theHitObject == AuthTrigger){
-					Debug.Log ("In else if - hit is authTrigger");
-					displayAuth();
 				}
 
 			}
@@ -210,16 +184,12 @@ public class ObstacleDetection : MonoBehaviour {
 			{
 
 				theHitObject = hit.collider.gameObject;
-				//pathObjects = GameObject.FindGameObjectsWithTag("path");
 				if (theHitObject.CompareTag("furniture") || theHitObject.CompareTag("wall")){
 					speed = decreasedSpeed;
 					yellowObstacleWarning (theHitObject); //changes color to yellow
-
-					//if statement so that the two messages do not overlap
-					//if (authMenu.enabled = false) { //added 7/12
-						displayWarning ();
-					//}
+					displayWarning ();
 				}
+
 			}
 
 			checkObstacleWarning (); //if all obstacles are far enough away, will turn white again
@@ -259,8 +229,9 @@ public class ObstacleDetection : MonoBehaviour {
 			//restoring speed to normal 
 			speed = speedSlider.value;
 
+			//backing away turns these displays to false
 			warningDisplayed = false;
-			AuthDisplayed = false; //added 7/12
+
 
 			//Testing purposes: deskObstacles = GameObject.FindGameObjectsWithTag ("desk");
 			deskObstacles = GameObject.FindGameObjectsWithTag ("furniture");
@@ -284,15 +255,6 @@ public class ObstacleDetection : MonoBehaviour {
 			There was a bug when we unchecked the warning toggle. ^It's now fixed.
 			If you are having issues with the auth toggle, just copy code above.
 			*/
-
-			//added 7/12
-			//working
-			if(AuthToggle.isOn){
-				AuthMenu.enabled = false;
-				AuthToggle.enabled = false;
-				AuthDisplayed = false;
-			}
-			//added 7/12
 		}
 	}
 
