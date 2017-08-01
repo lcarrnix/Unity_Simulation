@@ -293,10 +293,15 @@ public class InterfaceScript : MonoBehaviour {
 		//player.transform.position = new Vector3 (player.transform.position.x, value, player.transform.position.z);
 
 		//player.transform.localScale = new Vector3 (player.transform.localScale.x, value, player.transform.localScale.z);
-		stand.transform.localScale = new Vector3 (stand.transform.localScale.x, value, stand.transform.localScale.z);
-		stand.transform.position = new Vector3 (stand.transform.position.x, value, stand.transform.position.z);
 
+		//stand.transform.localScale = new Vector3 (stand.transform.localScale.x, value, stand.transform.localScale.z);
+		//stand.transform.position = new Vector3 (stand.transform.position.x, value, stand.transform.position.z);
+		//screen.transform.position = new Vector3 (screen.transform.position.x, stand.transform.position.y + value , screen.transform.position.z);
+
+		screen.transform.position = new Vector3 (screen.transform.position.x, value, screen.transform.position.z);
 		screen.transform.position = new Vector3 (screen.transform.position.x, stand.transform.position.y + value , screen.transform.position.z);
+
+
 	}
 
 	//TESTING HOVER OVER
