@@ -35,7 +35,8 @@ public class Docking : MonoBehaviour {
 		speedSlider = speedSlider.GetComponent<Slider> ();
 		inTriggerArea = false;
 		selectedAuto = false;
-		destination = new Vector3 (dockCube.transform.position.x, player.transform.position.y, dockCube.transform.position.z);
+		//destination = new Vector3 (dockCube.transform.position.x, player.transform.position.y, dockCube.transform.position.z);
+		destination = new Vector3 (dockCube.transform.position.x, dockCube.transform.position.y, dockCube.transform.position.z);
 		Debug.Log ("Destination: " + destination);
 		Debug.Log ("Dock: " + dockCube.transform.position.x + " " + dockCube.transform.position.y + " " + dockCube.transform.position.z);
 
