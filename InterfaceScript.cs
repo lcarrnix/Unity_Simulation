@@ -24,7 +24,6 @@ public class InterfaceScript : MonoBehaviour {
 	public Canvas AuthMenu; //added 7/12
 
 	//toggles
-	public Toggle mapToggle;
 	public Toggle wifiToggle;
 	public Toggle warningToggle;
 	public Toggle AuthToggle; //added 7/12
@@ -58,9 +57,6 @@ public class InterfaceScript : MonoBehaviour {
 	public Canvas Information;
 	//end testing for hover over displays- not currently working
 
-	public Camera mapCam;
-	public Camera disMapCam;
-	public Text mapToggleDisabled;
 
 	// Use this for initialization
 	void Start () {
@@ -68,10 +64,6 @@ public class InterfaceScript : MonoBehaviour {
 		player = GameObject.Find ("Player");
 		screen = GameObject.Find ("screen");
 		stand = GameObject.Find ("stand");
-
-		mapCam = mapCam.GetComponent<Camera> ();
-		disMapCam = disMapCam.GetComponent<Camera> ();
-		mapToggleDisabled = mapToggleDisabled.GetComponent<Text> ();
 
 		parkBtn = parkBtn.GetComponent<Button> ();
 		parkBtn.enabled = false; //button is not interactable (for now)
@@ -86,7 +78,7 @@ public class InterfaceScript : MonoBehaviour {
 		warningMenu = warningMenu.GetComponent<Canvas> ();
 		AuthMenu = AuthMenu.GetComponent<Canvas> (); //added 7/12
 
-		mapToggle = mapToggle.GetComponent<Toggle> ();
+
 		wifiToggle = wifiToggle.GetComponent<Toggle> ();
 		warningToggle = warningToggle.GetComponent<Toggle> ();
 		AuthToggle = AuthToggle.GetComponent<Toggle> ();
@@ -113,7 +105,7 @@ public class InterfaceScript : MonoBehaviour {
 
 
 		/**
-		 * commented out by amanda on 7/6
+		 * 
 		//testing hover over
 		theText = zoomInfo.GetComponent<Text>();
 		zoomInfo = zoomInfo.GetComponent<Text>();
@@ -131,9 +123,9 @@ public class InterfaceScript : MonoBehaviour {
 		helpMenu.enabled = false;
 		wifiMenu.enabled = false;
 		warningMenu.enabled = false;
-		AuthMenu.enabled = false; //added 7/12
+		AuthMenu.enabled = false; 
 
-		mapToggle.enabled = true;
+
 		wifiToggle.enabled = false;
 		warningToggle.enabled = false;
 		AuthToggle.enabled = false;
@@ -159,20 +151,7 @@ public class InterfaceScript : MonoBehaviour {
 	{
 		//FadeText (); //for testing hover over displays
 
-		//display map camera
-		if (mapToggle.isOn) {
-			//Debug.Log("Map toggle on");
-			mapCam.enabled = true;
-			disMapCam.enabled = false;
-			mapToggleDisabled.enabled = false;
-		}
-		//do not display map camera
-		else {
-			//Debug.Log("Map toggle off");
-			mapCam.enabled = false;
-			disMapCam.enabled = true;
-			mapToggleDisabled.enabled = true;
-		}
+
 	}
 
 	public void SettingsMenuDisplay()
@@ -186,7 +165,7 @@ public class InterfaceScript : MonoBehaviour {
 		AuthMenu.enabled = false; //added 7/12
 
 		//toggles
-		mapToggle.enabled = false;
+
 		wifiToggle.enabled = false;
 		warningToggle.enabled = false;
 		AuthToggle.enabled = false;
@@ -218,8 +197,6 @@ public class InterfaceScript : MonoBehaviour {
 		//help menu component
 		closeHelp.enabled = true;
 
-		mapToggle.enabled = false;
-
 		//disabling buttons on settings menu
 		//scroll.enabled = false;
 		micToggle.enabled = false;
@@ -239,7 +216,6 @@ public class InterfaceScript : MonoBehaviour {
 		heightSlider.enabled = false; //added 7/5
 		speedSlider.enabled = false; //added 7/5
 		settings.enabled = false;
-		mapToggle.enabled = false;
 		callButton.enabled = false; 
 
 		//deactive height slider and speed slider
@@ -261,7 +237,6 @@ public class InterfaceScript : MonoBehaviour {
 		heightSlider.enabled = true; //added 7/5
 		speedSlider.enabled = true; //added 7/5
 		settings.enabled = true;
-		mapToggle.enabled = true;
 		callButton.enabled = true; //added 6/29
 
 		//enable all other buttons on interface
