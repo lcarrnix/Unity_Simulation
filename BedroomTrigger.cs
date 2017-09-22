@@ -17,7 +17,7 @@ public class BedroomTrigger : MonoBehaviour {
 		AuthToggle.enabled = false; 
 		*/
 		AuthMenu = AuthMenu.GetComponent<Canvas> ();
-		AuthMenu.enabled = false;
+		AuthMenu.enabled = false; 
 		AuthToggle = AuthToggle.GetComponent<Toggle> ();
 		AuthToggle.enabled = false;
 		AuthDisplayed = false; 
@@ -25,7 +25,7 @@ public class BedroomTrigger : MonoBehaviour {
 
 	void OnTriggerEnter (Collider other){
 		Debug.Log ("enter bedroom");
-		displayAuth();
+		displayAuth(); 
 	}
 
 	/**
@@ -34,7 +34,7 @@ public class BedroomTrigger : MonoBehaviour {
 		//AuthMenu.enabled = true;
 		Debug.Log ("in bedroom");
 	}
-	*/
+	**/
 
 	void OnTriggerExit (Collider other){
 		//deactivate warning when leaving trigger zone
@@ -43,15 +43,15 @@ public class BedroomTrigger : MonoBehaviour {
 		Debug.Log ("leave bedroom");
 	}
 
+
 	void displayAuth(){
-		
 		if (AuthToggle.isOn == true) {
 			AuthMenu.enabled = true;
 			AuthToggle.enabled = true;
 			AuthDisplayed = true;
 			Debug.Log ("in displayAuth");
 		}
-
 	}
+
 
 }

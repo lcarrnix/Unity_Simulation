@@ -21,21 +21,30 @@ public class InterfaceScript : MonoBehaviour {
 	public Canvas helpMenu;
 	public Canvas wifiMenu;
 	public Canvas warningMenu;
-	public Canvas AuthMenu; //added 7/12
+	public Canvas AuthMenu; 
 
 	//toggles
 	public Toggle wifiToggle;
 	public Toggle warningToggle;
-	public Toggle AuthToggle; //added 7/12
+	public Toggle AuthToggle; 
 
 	//things on main display
 	public Slider zoomSlider;
 	public Slider volumeSlider;
 	public Slider heightSlider;
 	public Slider speedSlider;
-	public Button exitBtn;
+
+	public Button exitBtn; //replaced by green call button?
 	public Button settings;
-	public Button callButton;
+	public Button greenCallButton;
+	public Button redCallButton;
+	public Button redCameraButton;
+	public Button greenCameraButton;
+	public Button redVolumeButton;
+	public Button greenVolumeButton;
+	public Button redMikeButton;
+	public Button greenMikeButton;
+	public Button speedButton;
 
 
 	//things on settings menu
@@ -90,7 +99,18 @@ public class InterfaceScript : MonoBehaviour {
 		heightSlider = heightSlider.GetComponent<Slider> ();
 		speedSlider = speedSlider.GetComponent<Slider> ();
 		settings = settings.GetComponent<Button> ();
-		callButton = callButton.GetComponent<Button> ();
+
+		//added 9/17
+		greenCallButton = greenCallButton.GetComponent<Button> ();
+		redCallButton = redCallButton.GetComponent<Button> ();
+		redCameraButton = redCameraButton.GetComponent<Button> ();
+		greenCameraButton = greenCameraButton.GetComponent<Button> ();
+		greenVolumeButton = greenVolumeButton.GetComponent<Button> ();
+		redVolumeButton = redVolumeButton.GetComponent<Button> ();
+		redMikeButton = redMikeButton.GetComponent<Button> ();
+		greenMikeButton = greenMikeButton.GetComponent<Button> ();
+		speedButton = speedButton.GetComponent<Button> ();
+		//end of added 9/17
 
 
 		//settings menu components
@@ -135,8 +155,9 @@ public class InterfaceScript : MonoBehaviour {
 		volumeSlider.enabled = true;
 		heightSlider.enabled = true;
 		speedSlider.enabled = true;
+		speedSlider.gameObject.SetActive (false); //added 9/17
 		settings.enabled = true;
-		callButton.enabled = true; 
+		greenCallButton.enabled = true; //changed from callButton to greenCallButton
 
 		//scroll.enabled = false;
 		micToggle.enabled = false;
@@ -144,13 +165,25 @@ public class InterfaceScript : MonoBehaviour {
 		helpBtn.enabled = false;
 		closeSettings.enabled = false;
 		closeHelp.enabled = false;
+
+		//added 9/17
+		greenCallButton.gameObject.SetActive(true);
+		redCallButton.gameObject.SetActive(false);
+		redCameraButton.gameObject.SetActive(false);
+		greenCameraButton.gameObject.SetActive(true);
+		greenVolumeButton.gameObject.SetActive(true);
+		redVolumeButton.gameObject.SetActive(false);
+		redMikeButton.gameObject.SetActive(false);
+		greenMikeButton.gameObject.SetActive(true);
+		speedButton.gameObject.SetActive(true);
+		//end of added 9/17
+
 	}
 
 	// Update is called once per frame
 	void Update()
 	{
 		//FadeText (); //for testing hover over displays
-
 
 	}
 
@@ -162,7 +195,7 @@ public class InterfaceScript : MonoBehaviour {
 		helpMenu.enabled = false;
 		wifiMenu.enabled = false;
 		warningMenu.enabled = false;
-		AuthMenu.enabled = false; //added 7/12
+		AuthMenu.enabled = false; 
 
 		//toggles
 
@@ -181,10 +214,11 @@ public class InterfaceScript : MonoBehaviour {
 		exitBtn.enabled = false;
 		zoomSlider.enabled = false;
 		volumeSlider.enabled = false;
-		heightSlider.enabled = false; //added 7/5
-		speedSlider.enabled = false; //added 7/5
+		heightSlider.enabled = false; 
+		speedSlider.enabled = false; 
 		settings.enabled = false;
-		callButton.enabled = false; 
+		greenCallButton.enabled = false; //changed from callButton to greenCallButton
+
 
 		//pressing close on settings menu will send to NoPress()
 	}
@@ -213,10 +247,11 @@ public class InterfaceScript : MonoBehaviour {
 		exitBtn.enabled = false;
 		zoomSlider.enabled = false;
 		volumeSlider.enabled = false;
-		heightSlider.enabled = false; //added 7/5
-		speedSlider.enabled = false; //added 7/5
+		heightSlider.enabled = false; 
+		speedSlider.enabled = false; 
 		settings.enabled = false;
-		callButton.enabled = false; 
+		greenCallButton.gameObject.SetActive(false); //changed from callButton to greenCallButton
+		redCallButton.gameObject.SetActive(true);
 
 		//deactive height slider and speed slider
 
@@ -234,11 +269,11 @@ public class InterfaceScript : MonoBehaviour {
 		exitBtn.enabled = true;
 		zoomSlider.enabled = true;
 		volumeSlider.enabled = true;
-		heightSlider.enabled = true; //added 7/5
-		speedSlider.enabled = true; //added 7/5
+		heightSlider.enabled = true; 
+		speedSlider.enabled = true; 
 		settings.enabled = true;
-		callButton.enabled = true; //added 6/29
-
+		greenCallButton.gameObject.SetActive(true); //changed from callButton to greenCallButton
+		redCallButton.gameObject.SetActive(false);
 		//enable all other buttons on interface
 	}
 
@@ -308,6 +343,46 @@ public class InterfaceScript : MonoBehaviour {
 	public void ExitGame()
 	{
 		SceneManager.LoadScene ("CallScene");
+	}
+
+	public void setMikeButtonToRed(){
+		greenMikeButton.gameObject.SetActive(false); 
+		redMikeButton.gameObject.SetActive(true);
+	}
+
+	public void setMikeButtonToGreen(){
+		greenMikeButton.gameObject.SetActive(true); 
+		redMikeButton.gameObject.SetActive(false);
+	}
+
+	public void setCameraButtonToRed(){
+		greenCameraButton.gameObject.SetActive(false); 
+		redCameraButton.gameObject.SetActive(true);
+		SceneManager.LoadScene ("CameraOff");
+	}
+
+	public void setCameraButtonToGreen(){
+		greenCameraButton.gameObject.SetActive(true); 
+		redCameraButton.gameObject.SetActive(false);
+		SceneManager.LoadScene ("MiniGame");
+	}
+
+	public void setVolumeButtonToRed(){
+		greenVolumeButton.gameObject.SetActive(false); 
+		redVolumeButton.gameObject.SetActive(true);
+	}
+
+	public void setVolumeButtonToGreen(){
+		greenVolumeButton.gameObject.SetActive(true); 
+		redVolumeButton.gameObject.SetActive(false);
+	}
+
+	public void SpeedSliderActive(){
+		if (speedSlider.gameObject.activeInHierarchy == false) {
+			speedSlider.gameObject.SetActive (true);
+		} else {
+			speedSlider.gameObject.SetActive (false);
+		}
 	}
 
 }
