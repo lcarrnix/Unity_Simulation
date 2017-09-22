@@ -30,10 +30,10 @@ public class LoginButton : MonoBehaviour {
 		EnterUsername ();
 	}
 
-	// When user clicks login - jumps to call scene
+	// When user clicks login - jumps to privacy view scene
 	public void LoadCalls()
 	{
-		SceneManager.LoadScene ("CallScene");
+		SceneManager.LoadScene ("UserView");
 	}
 
 	public void Update() //every frame
